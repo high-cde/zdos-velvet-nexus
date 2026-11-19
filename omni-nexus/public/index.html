@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>ZDOS // OMNI-NEXUS WAR ROOM</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    body { background: #07070b; color: #e2e8f0; font-family: monospace; margin: 0; padding: 20px; }
+    h1 { color: #ef4444; }
+    .card { background: #0f1016; border: 1px solid #27273a; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+    input, textarea { width: 100%; background: #050508; color: #fff; border: 1px solid #3f3f5a; padding: 10px; box-sizing: border-box; margin-top: 8px; font-family: inherit; }
+    button { background: #b91c1c; color: #fff; border: none; padding: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; border-radius: 6px; }
+    #pairing-box { font-size: 28px; color: #34d399; font-weight: bold; text-align: center; padding: 14px; letter-spacing: 4px; background: #022c22; border: 1px solid #059669; border-radius: 8px; margin-top: 12px; display: none; }
+    #logs { height: 220px; overflow-y: auto; background: #040406; padding: 10px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>⚡ ZDOS // OMNI-NEXUS & VELVET SECURITY</h1>
+
+  <div class="card">
+    <h3>📱 COLLEGA WHATSAPP CON CODICE A 8 CIFRE</h3>
+    <input id="phone" type="text" placeholder="Inserisci numero con prefisso senza + (es. 393401234567)">
+    <button onclick="getCode()" style="background:#047857;">🔑 GENERA CODICE DI ACCOPPIAMENTO</button>
+    <div id="pairing-box"></div>
+  </div>
+
+  <div class="card">
+    <h3>🔥 AMPLIFICATORE GLOBALE (LA LOGGIA + NOVA + TG)</h3>
+    <textarea id="blast" rows="3" placeholder="Scrivi messaggio da sparare subito..."></textarea>
+    <input id="sec" type="password" value="ZDOS2026">
+    <button onclick="send()">🚀 AMPLIFICA ORA</button>
+  </div>
+
+  <div class="card"><h3>TELEMETRIA LIVE</h3><div id="logs"></div></div>
+
+  <script>
+    const s = io();
+    s.on("log", m => { const d = document.createElement("div"); d.textContent = m; document.getElementById("logs").prepend(d); });
+    async function getCode() {
+      const phone = document.getElementById("phone").value.replace(/[^0-9]/g, "");
+      if (!phone) return alert("Inserisci il numero con 39 davanti!");
+      const res = await fetch("/api/pair", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ phone }) });
+      const data = await res.json();
+      const box = document.getElementById("pairing-box");
+      box.style.display = "block";
+      box.textContent = data.ok ? data.code : ("ERRORE: " + data.error);
+    }
+    async function send() {
+      const text = document.getElementById("blast").value;
+      const secret = document.getElementById("sec").value;
+      await fetch("/api/amplify", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ text, secret }) });
+      document.getElementById("blast").value = "";
+    }
+  </script>
+</body>
+</html>

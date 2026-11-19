@@ -1,0 +1,17 @@
+.env
+*.env
+*auth*
+*session*
+*creds*
+*.db
+*.sqlite
+velvet_db.json
+verified_users.json
+node_modules/
+__pycache__/
+*.log
+*.bak
+*.tar.gz
+
+venv/
+.venv/

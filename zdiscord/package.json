@@ -1,0 +1,17 @@
+{
+  "name": "zdiscord",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bot Discord z-xSOLANA: K.I.R.A., stato ecosistema, token, radar, verifica holder con firma wallet. © 2026 ZDOS1.3 — P.IVA 11040550961.",
+  "license": "SEE LICENSE IN ../LICENSE",
+  "main": "src/index.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/index.js",
+    "register": "node src/register-commands.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3"
+  }
+}
