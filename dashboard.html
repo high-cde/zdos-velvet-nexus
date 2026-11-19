@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VELVET CITY // SOVEREIGN COMMAND DASHBOARD</title>
+  <style>
+    :root {
+      --bg: #070409;
+      --panel: rgba(18, 10, 24, 0.85);
+      --card: rgba(11, 7, 15, 0.9);
+      --border: rgba(225, 29, 72, 0.35);
+      --crimson: #e11d48;
+      --crimson-glow: rgba(225, 29, 72, 0.28);
+      --emerald: #10b981;
+      --gold: #eab308;
+      --cyan: #06b6d4;
+      --purple: #a855f7;
+      --text: #f8f5fa;
+      --muted: #9d8ca6;
+      --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: 'Manrope', system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background:
+        radial-gradient(circle at 15% 10%, rgba(225, 29, 72, 0.14), transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.09), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      padding: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 1.4rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 12px var(--emerald);
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .brand h1 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .brand span {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: #fda4af;
+      display: block;
+    }
+
+    .quick-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+
+    .nav-pill {
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.48rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+
+    .nav-pill:hover {
+      border-color: var(--crimson);
+      background: rgba(225, 29, 72, 0.18);
+      transform: translateY(-1px);
+    }
+
+    /* GRID SYSTEM */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .module {
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 18px;
+      padding: 1.35rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+    }
+
+    .module.highlight {
+      border-color: var(--border);
+    }
+
+    .mod-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 0.7rem;
+    }
+
+    .mod-head h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: rgba(225, 29, 72, 0.16);
+      color: #fda4af;
+      border: 1px solid rgba(225, 29, 72, 0.3);
+    }
+
+    .desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+    }
+
+    /* INPUTS & BUTTONS */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+
+    input, select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 0.65rem 0.8rem;
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2);
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      width: 100%;
+      padding: 0.68rem 0.9rem;
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: 0.83rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-crimson { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; box-shadow: 0 6px 18px var(--crimson-glow); }
+    .btn-wa { background: linear-gradient(135deg, #10b981, #059669); color: #03150e; }
+    .btn-gold { background: rgba(234, 179, 8, 0.14); border-color: rgba(234, 179, 8, 0.45); color: #fde047; }
+    .btn-cyan { background: rgba(6, 182, 212, 0.14); border-color: rgba(6, 182, 212, 0.45); color: #67e8f9; }
+    .btn-purple { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.45); color: #d8b4fe; }
+    .btn-ghost { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.14); color: var(--text); }
+
+    .console-out {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      background: #050307;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+      color: #d1c7d8;
+      min-height: 3.4rem;
+      word-break: break-word;
+    }
+
+    .console-out.ok { border-color: rgba(16, 185, 129, 0.45); color: #a7f3d0; }
+    .console-out.err { border-color: rgba(225, 29, 72, 0.45); color: #fecdd3; }
+
+    .wallet-box {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.18);
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="pulse"></div>
+        <div>
+          <h1>VELVET CITY // COMMAND DECK</h1>
+          <span>REAL GAME · 18+ CONSENSUAL · AGI / UMANO · ECOSISTEMA ZDOS</span>
+        </div>
+      </div>
+      <nav class="quick-nav">
+        <a class="nav-pill" href="https://velvet.x-zdos.it/" target="_blank">🏛️ Portale VelvetHub</a>
+        <a class="nav-pill" href="https://velvet.x-zdos.it/lodge-card.html" target="_blank">🃏 Lodge Card</a>
+        <a class="nav-pill" href="https://swap.x-zdos.it/" target="_blank">⚡ ZSwap Hub</a>
+        <a class="nav-pill" href="https://quest.x-zdos.it/" target="_blank">⚔️ Quest Arena</a>
+        <a class="nav-pill" href="https://x-zdos.it/" target="_blank">🌐 ZDOS Core</a>
+      </nav>
+    </header>
+
+    <!-- MAIN MODULES GRID -->
+    <main class="grid">
+
+      <!-- 1. IDENTITÀ GLOBALE $OV & LODGE CARD -->
+      <section class="module highlight">
+        <div>
+          <div class="mod-head">
+            <h2>🗝️ 1. Identità Globale $OV &amp; Loggia</h2>
+            <span class="tag">NEXUS :8899</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Verifica il tuo sigillo <code>OV-XXXX-VELVET</code>, controlla il punteggio <strong>Devotion</strong> e apri la tua carta d'identità nella Loggia.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <input type="text" id="ovInput" placeholder="OV-XXXX-VELVET (o 4 lettere)" maxlength="24" />
+          <div class="btn-grid">
+            <button class="btn btn-crimson" onclick="verifyOv()">Verifica ID $OV</button>
+            <a class="btn btn-gold" id="lodgeBtn" href="/lodge-card.html" target="_blank">Apri Lodge Card ↗</a>
+          </div>
+          <div class="btn-grid">
+            <button class="btn btn-ghost" onclick="copyCmd('!forge')">Copia !forge</button>
+            <button class="btn btn-ghost" onclick="copyCmd('!portal')">Copia !portal</button>
+          </div>
+        </div>
+
+        <div class="console-out" id="ovConsole">In attesa di verifica sigillo OV-XXXX-VELVET...</div>
+      </section>
+
+      <!-- 2. ZSWAP HUB ($OV / $DSN) -->
+      <section class="module">
+        <div>
+          <div class="mod-head">
+            <h2>⚡ 2. ZSwap Hub &amp; Tokenomics</h2>
+            <span class="tag">SOLANA MAINNET</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Scambia <strong>SOL</strong>, <strong>$DSN (xZDOS)</strong> e <strong>$OV</strong> senza intermediari centralizzati su <code>swap.x-zdos.it</code>.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <div class="row-2">
+            <select id="swapFrom">
+              <option value="SOL">Da: SOL</option>
+              <option value="DSN">Da: $DSN (xZDOS)</option>
+              <option value="OV">Da: $OV (Velvet)</option>
+            </select>
+            <select id="swapTo">
+              <option value="DSN">A: $DSN (xZDOS)</option>
+              <option value="OV">A: $OV (Velvet)</option>
+              <option value="SOL">A: SOL</option>
+            </select>
+          </div>
+          <input type="number" id="swapAmount" placeholder="Importo da scambiare (es. 0.25)" step="0.01" min="0" />
+          <div class="btn-grid">
+            <button class="btn btn-cyan" onclick="openZSwap()">Apri ZSwap Hub ↗</button>
+            <button class="btn btn-ghost" onclick="copyText('35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4', 'Contract $DSN')">Copia CA $DSN</button>
+          </div>
+        </div>
+
+        <div class="console-out" id="swapConsole">CA $DSN: 35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4</div>
+      </section>
+
+      <!-- 3. SEND & CONTRIBUTION SOLANA -->
+      <section class="module">
+        <div>
+          <div class="mod-head">
+            <h2>💸 3. Send &amp; Verifica On-Chain</h2>
+            <span class="tag">NON-CUSTODIAL</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Invia SOL / token al tesoriere della Loggia (Phantom / Solflare) e collega il tuo wallet al Nexus con <code>!wallet</code>.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <div class="wallet-box">
+            <span id="treasuryAddr">6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD</span>
+            <button class="btn btn-ghost" style="width:auto;padding:0.35rem 0.6rem;font-size:0.72rem;" onclick="copyText('6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD', 'Wallet Tesoreria')">Copia</button>
+          </div>
+          <input type="text" id="userWalletInput" placeholder="Il tuo indirizzo wallet Solana..." />
+          <div class="btn-grid">
+            <button class="btn btn-purple" onclick="sendSolanaDeepLink()">Invia via Phantom ↗</button>
+            <button class="btn btn-ghost" onclick="copyWalletCmd()">Copia !wallet</button>
+          </div>
+        </div>
+
+        <div class="console-out" id="sendConsole">Wallet Tesoreria Velvet attivo e pronto su Mainnet.</div>
+      </section>
+
+      <!-- 4. WHATSAPP 18+ & RADAR 30 KM -->
+      <section class="module highlight">
+        <div>
+          <div class="mod-head">
+            <h2>🖤 4. WhatsApp 18+ &amp; Radar 30 km</h2>
+            <span class="tag">+44 7742 507902</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Entra nel canale ufficiale <strong>Our Velvet</strong> e genera i comandi per sessioni di sottomissione online nel raggio di <strong>30 km</strong>.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <div class="btn-grid">
+            <a class="btn btn-wa" href="https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n" target="_blank">Canale WA 18+ ↗</a>
+            <a class="btn btn-ghost" href="https://wa.me/447742507902?text=!velvet" target="_blank">Chat Ponte Nexus ↗</a>
+          </div>
+          <div class="row-2">
+            <input type="text" id="latInput" placeholder="Lat (es. 45.03)" />
+            <input type="text" id="lonInput" placeholder="Lon (es. 9.28)" />
+          </div>
+          <div class="btn-grid">
+            <button class="btn btn-crimson" onclick="buildSetLoc()">Genera !setloc</button>
+            <button class="btn btn-ghost" onclick="copyCmd('!nearby30')">Copia !nearby30</button>
+          </div>
+        </div>
+
+        <div class="console-out" id="waConsole">Comandi rapidi: !setloc · !nearby30 · !subsession · !acceptsub</div>
+      </section>
+
+      <!-- 5. REAL GAME & SESSIONI DI SOTTOMISSIONE -->
+      <section class="module">
+        <div>
+          <div class="mod-head">
+            <h2>⛓️ 5. Sessione Online &amp; Quest Arena</h2>
+            <span class="tag">LIVELLI 1–5</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Avvia una sessione online consensuale su WhatsApp con un cittadino entro 30 km o accedi alle Quest Ibride AGI / Umano.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <div class="row-2">
+            <input type="text" id="targetOvInput" placeholder="ID Target (OV-XXXX-VELVET)" />
+            <input type="text" id="protoInput" placeholder="Protocollo (es. Rituale)" />
+          </div>
+          <div class="btn-grid">
+            <button class="btn btn-crimson" onclick="buildSubSession()">Genera !subsession</button>
+            <a class="btn btn-gold" href="https://quest.x-zdos.it/" target="_blank">Apri Quest Hub ↗</a>
+          </div>
+        </div>
+
+        <div class="console-out" id="questConsole">Consenso 18+ obbligatorio prima di ogni attivazione sessione.</div>
+      </section>
+
+      <!-- 6. PORTALI ECOSISTEMA & SOCIAL SOVRANI -->
+      <section class="module">
+        <div>
+          <div class="mod-head">
+            <h2>🌐 6. Varchi Sovrani &amp; Community</h2>
+            <span class="tag">ZDOS NETWORK</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Accesso rapido a tutti i nodi attivi della rete: Discord Velvet City, Telegram Mini App, IDE ZLang e XCloud.
+          </p>
+        </div>
+
+        <div class="field-group">
+          <div class="btn-grid">
+            <a class="btn btn-purple" href="https://discord.gg/BcMh6vcpQX" target="_blank">Discord Velvet City ↗</a>
+            <a class="btn btn-cyan" href="https://t.me/RedVelvetOfficial_bot" target="_blank">Telegram Bot ↗</a>
+          </div>
+          <div class="btn-grid">
+            <a class="btn btn-ghost" href="https://x-zdos.it/ide/" target="_blank">ZLang IDE ↗</a>
+            <a class="btn btn-ghost" href="https://x-zdos.it/xcloud/" target="_blank">ZDOS XCloud ↗</a>
+          </div>
+          <div class="btn-grid">
+            <a class="btn btn-ghost" href="https://zdesk.x-zdos.it/" target="_blank">ZDesk Node ↗</a>
+            <a class="btn btn-ghost" href="https://app.x-zdos.it/" target="_blank">ZDOS App ↗</a>
+          </div>
+        </div>
+
+        <div class="console-out ok">Tutti i nodi SSL su x-zdos.it e velvet.x-zdos.it operativi.</div>
+      </section>
+
+    </main>
+
+    <footer class="footer">
+      VELVET CITY &amp; ZDOS SOVEREIGN ECOSYSTEM · 18+ CONSENSUAL ONLY · BUILD WHAT YOU CAN PROVE ⚡
+    </footer>
+  </div>
+
+  <script>
+    const STORAGE_OV = "zdos_velvet_ov_id";
+
+    function normalizeOv(raw) {
+      let v = String(raw || "").trim().toUpperCase().replace(/[^A-Z0-9-]/g, "");
+      if (/^[A-Z0-9]{4}$/.test(v)) v = "OV-" + v + "-VELVET";
+      return v;
+    }
+
+    async function verifyOv() {
+      const input = document.getElementById("ovInput");
+      const out = document.getElementById("ovConsole");
+      const lodgeBtn = document.getElementById("lodgeBtn");
+      const ovId = normalizeOv(input.value);
+      input.value = ovId;
+
+      if (!ovId) {
+        out.className = "console-out err";
+        out.textContent = "❌ Inserisci un codice OV-XXXX-VELVET valido.";
+        return;
+      }
+
+      out.className = "console-out";
+      out.textContent = "⏳ Interrogazione Nexus per " + ovId + "...";
+
+      try {
+        const res = await fetch("/api/verify-ov/" + encodeURIComponent(ovId));
+        const data = await res.json();
+        if (res.ok && data && data.valid) {
+          localStorage.setItem(STORAGE_OV, data.ovId || ovId);
+          lodgeBtn.href = "/lodge-card.html?ov=" + encodeURIComponent(data.ovId || ovId);
+          out.className = "console-out ok";
+          out.innerHTML = "✅ <strong>ATTIVO:</strong> " + (data.ovId || ovId) + " | Status: " + (data.status || "VERIFIED") + " | Devotion: " + (data.devotion ?? 0);
+        } else {
+          out.className = "console-out err";
+          out.textContent = "❌ " + ((data && data.error) || "Sigillo non trovato. Usa !forge su WhatsApp/Discord.");
+        }
+      } catch (e) {
+        out.className = "console-out err";
+        out.textContent = "⚠️ Errore connessione al Nexus.";
+      }
+    }
+
+    function openZSwap() {
+      const from = document.getElementById("swapFrom").value;
+      const to = document.getElementById("swapTo").value;
+      const amt = document.getElementById("swapAmount").value || "";
+      const url = "https://swap.x-zdos.it/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + (amt ? "&amount=" + encodeURIComponent(amt) : "");
+      document.getElementById("swapConsole").className = "console-out ok";
+      document.getElementById("swapConsole").textContent = "🚀 Apertura ZSwap Hub: " + from + " → " + to + (amt ? " (" + amt + ")" : "");
+      window.open(url, "_blank", "noopener");
+    }
+
+    function sendSolanaDeepLink() {
+      const dest = "6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD";
+      const amt = document.getElementById("swapAmount").value || "0.02";
+      const solanaUri = "solana:" + dest + "?amount=" + encodeURIComponent(amt) + "&label=Velvet%20City%20Lodge";
+      document.getElementById("sendConsole").className = "console-out ok";
+      document.getElementById("sendConsole").textContent = "💸 Avvio transfer Solana verso " + dest.slice(0, 6) + "..." + dest.slice(-4);
+      window.location.href = solanaUri;
+    }
+
+    function copyWalletCmd() {
+      const w = document.getElementById("userWalletInput").value.trim();
+      if (!w) {
+        document.getElementById("sendConsole").className = "console-out err";
+        document.getElementById("sendConsole").textContent = "❌ Inserisci prima il tuo indirizzo wallet Solana.";
+        return;
+      }
+      copyText("!wallet " + w, "Comando !wallet", "sendConsole");
+    }
+
+    function buildSetLoc() {
+      const lat = document.getElementById("latInput").value.trim();
+      const lon = document.getElementById("lonInput").value.trim();
+      if (!lat || !lon) {
+        document.getElementById("waConsole").className = "console-out err";
+        document.getElementById("waConsole").textContent = "❌ Inserisci latitudine e longitudine (es. 45.03 e 9.28).";
+        return;
+      }
+      const cmd = "!setloc " + lat + " " + lon;
+      copyText(cmd, "Comando Radar 30km", "waConsole");
+      window.open("https://wa.me/447742507902?text=" + encodeURIComponent(cmd), "_blank", "noopener");
+    }
+
+    function buildSubSession() {
+      const target = normalizeOv(document.getElementById("targetOvInput").value);
+      const proto = document.getElementById("protoInput").value.trim() || "WhatsApp Online Submission";
+      if (!target) {
+        document.getElementById("questConsole").className = "console-out err";
+        document.getElementById("questConsole").textContent = "❌ Inserisci l'ID OV del destinatario entro 30 km.";
+        return;
+      }
+      const cmd = "!subsession " + target + " " + proto;
+      copyText(cmd, "Invito Sessione Online", "questConsole");
+      window.open("https://wa.me/447742507902?text=" + encodeURIComponent(cmd), "_blank", "noopener");
+    }
+
+    function copyCmd(cmd) {
+      copyText(cmd, "Comando " + cmd, "ovConsole");
+    }
+
+    function copyText(text, label, consoleId = "swapConsole") {
+      navigator.clipboard.writeText(text).then(() => {
+        const el = document.getElementById(consoleId);
+        el.className = "console-out ok";
+        el.textContent = "📋 " + label + " copiato: " + text;
+      }).catch(() => {});
+    }
+
+    // Ripristina ID OV salvato
+    window.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem(STORAGE_OV);
+      if (saved) {
+        document.getElementById("ovInput").value = saved;
+        document.getElementById("lodgeBtn").href = "/lodge-card.html?ov=" + encodeURIComponent(saved);
+        verifyOv();
+      }
+    });
+  </script>
+</body>
+</html>
