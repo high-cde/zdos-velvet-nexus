@@ -1,3 +1,4 @@
+const velvetTgConscious = require("./velvet-telegram-conscious");
 const velvetShop = require("./velvet-shop-engine");
 const globalIdMint = require("./global-id-mint");
 const omniBridge = require("./omni-handle-bridge");
@@ -1076,6 +1077,11 @@ app.post("/api/shop/verify-order", async (req, res) => {
     res.status(500).json({ ok: false, error: e.message });
   }
 });
+
+
+if (typeof tg !== "undefined" && tg) {
+  velvetTgConscious.attachConsciousTelegram(tg, db, saveDB);
+}
 
 server.listen(process.env.PORT || 8899, () => log("[NEXUS] War Room attiva su porta 8899"));
 startWA("447742507902");
