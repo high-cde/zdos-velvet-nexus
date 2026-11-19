@@ -458,6 +458,52 @@
         <div class="console-out" id="sendConsole">Tesoreria Velvet e nodi ZDOS pronti.</div>
       </section>
 
+
+      <!-- 6. OMNI HANDLE BRIDGE (X <-> WHATSAPP <-> TELEGRAM) -->
+      <section class="module highlight span-2" id="omniBridgeModule">
+        <div>
+          <div class="mod-head">
+            <h2>🌉 6. Omni Handle Bridge — X · WhatsApp · Telegram</h2>
+            <span class="tag" id="bridgeBadge">LINKED: -- | X QUEUE: --</span>
+          </div>
+          <p class="desc" style="margin-top:0.6rem;">
+            Collega il tuo handle <strong>X</strong>, il numero <strong>WhatsApp</strong>, l'utente <strong>Telegram</strong> e il sigillo <code>$OV</code> in un'unica identità (<code>POST /api/bridge/link</code>) e trasmetti messaggi unificati cross-canale (<code>POST /api/bridge/dispatch</code>).
+          </p>
+        </div>
+
+        <div class="field-group">
+          <div class="row-3">
+            <input type="text" id="brgOvInput" placeholder="Sigillo $OV (OV-XXXX-VELVET)" maxlength="24" />
+            <input type="text" id="brgXInput" placeholder="Handle X (es. @high_cde)" />
+            <input type="text" id="brgTgInput" placeholder="User Telegram (es. @Rubina)" />
+          </div>
+
+          <div class="row-2">
+            <input type="text" id="brgWaInput" placeholder="Telefono WhatsApp (es. +447742507902)" />
+            <button class="btn btn-crimson" type="button" onclick="linkOmniHandle()">🔗 Collega Identità X + WA + TG</button>
+          </div>
+
+          <div class="row-3" style="margin-top:0.35rem;">
+            <input type="text" id="brgToInput" placeholder="Destinatario (OV-ID, @handle o vuoto = Broadcast)" />
+            <input type="text" id="brgMsgInput" placeholder="Messaggio o ordine da inviare cross-canale..." />
+            <select id="brgTargetsSelect">
+              <option value="whatsapp,telegram,x">Canali: WhatsApp + Telegram + X</option>
+              <option value="whatsapp,telegram">Canali: WhatsApp + Telegram</option>
+              <option value="whatsapp">Solo WhatsApp</option>
+              <option value="telegram">Solo Telegram</option>
+              <option value="x">Solo Coda X</option>
+            </select>
+          </div>
+
+          <div class="btn-grid">
+            <button class="btn btn-wa" type="button" onclick="dispatchOmniMessage()">⚡ Invia Dispatch Unificato</button>
+            <button class="btn btn-ghost" type="button" onclick="loadBridgeStatus()">🔄 Aggiorna Stato Bridge</button>
+          </div>
+        </div>
+
+        <div class="console-out" id="bridgeConsole">Bridge Omnicanale pronto. Collega i tuoi handle o invia un messaggio unificato.</div>
+      </section>
+
     </main>
 
     <footer class="footer">
@@ -693,7 +739,113 @@
       }).catch(() => {});
     }
 
+
+    async function loadBridgeStatus() {
+      try {
+        const res = await fetch("/api/bridge/status");
+        const data = await res.json();
+        if (data && data.ok) {
+          const badge = document.getElementById("bridgeBadge");
+          if (badge) {
+            badge.textContent = "LINKED: " + (data.linkedCount ?? 0) + " | X QUEUE: " + (data.xOutboxCount ?? 0);
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function linkOmniHandle() {
+      const ovRaw = document.getElementById("brgOvInput").value || document.getElementById("ovInput")?.value || "";
+      const ovId = normalizeOv(ovRaw);
+      const xHandle = document.getElementById("brgXInput").value.trim();
+      const tgUser = document.getElementById("brgTgInput").value.trim();
+      const waPhone = document.getElementById("brgWaInput").value.trim();
+      const out = document.getElementById("bridgeConsole");
+
+      if (!ovId && !xHandle && !tgUser && !waPhone) {
+        out.className = "console-out err";
+        out.textContent = "❌ Inserisci almeno un dato tra Sigillo $OV, Handle X, Telegram o WhatsApp.";
+        return;
+      }
+
+      out.className = "console-out";
+      out.textContent = "🔗 Collegamento identità X ↔ WhatsApp ↔ Telegram nel Nexus...";
+
+      try {
+        const res = await fetch("/api/bridge/link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ovId, xHandle, tgUser, waPhone })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok && data.user) {
+          if (data.user.ovId && typeof syncOvInputs === "function") {
+            syncOvInputs(data.user.ovId);
+            document.getElementById("brgOvInput").value = data.user.ovId;
+          }
+          const ch = data.user.channels || {};
+          out.className = "console-out ok";
+          out.innerHTML =
+            "✅ <strong>BRIDGE ATTIVO:</strong> " + data.user.ovId +
+            " | Token: <strong>" + (data.user.bridgeToken || "-") + "</strong>" +
+            " | X: " + (ch.xHandle || "-") +
+            " | WA: " + (ch.waPhone || "-") +
+            " | TG: " + (ch.tgUser || "-");
+          loadBridgeStatus();
+        } else {
+          out.className = "console-out err";
+          out.textContent = "❌ " + (data.error || "Errore durante il collegamento.");
+        }
+      } catch (e) {
+        out.className = "console-out err";
+        out.textContent = "⚠️ Impossibile contattare /api/bridge/link.";
+      }
+    }
+
+    async function dispatchOmniMessage() {
+      const fromId = normalizeOv(document.getElementById("brgOvInput").value || document.getElementById("ovInput")?.value || "") || document.getElementById("brgXInput").value.trim();
+      const toId = document.getElementById("brgToInput").value.trim();
+      const message = document.getElementById("brgMsgInput").value.trim();
+      const targets = document.getElementById("brgTargetsSelect").value.split(",").filter(Boolean);
+      const out = document.getElementById("bridgeConsole");
+
+      if (!message) {
+        out.className = "console-out err";
+        out.textContent = "❌ Scrivi il messaggio da trasmettere prima di inviare.";
+        return;
+      }
+
+      out.className = "console-out";
+      out.textContent = "⚡ Trasmissione unificata in corso su " + targets.join(", ") + "...";
+
+      try {
+        const res = await fetch("/api/bridge/dispatch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fromId, toId: toId || null, targets, message })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok && data.delivery) {
+          const r = data.delivery.results || {};
+          out.className = "console-out ok";
+          out.innerHTML =
+            "🚀 <strong>DISPATCH " + data.delivery.id + ":</strong> " +
+            "WA=<code>" + (r.whatsapp || "-") + "</code> · " +
+            "TG=<code>" + (r.telegram || "-") + "</code> · " +
+            "X=<code>" + (r.x || "-") + "</code>";
+          document.getElementById("brgMsgInput").value = "";
+          loadBridgeStatus();
+        } else {
+          out.className = "console-out err";
+          out.textContent = "❌ " + (data.error || "Errore durante il dispatch.");
+        }
+      } catch (e) {
+        out.className = "console-out err";
+        out.textContent = "⚠️ Impossibile contattare /api/bridge/dispatch.";
+      }
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
+      loadBridgeStatus();
       loadTelemetry();
       const saved = localStorage.getItem(STORAGE_OV);
       if (saved) {
