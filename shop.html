@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OUR VELVET // QUICK SOLANA SHOP & TRIBUTE 18+</title>
+  <style>
+    :root {
+      --bg: #070409;
+      --panel: rgba(18, 10, 24, 0.92);
+      --border: rgba(225, 29, 72, 0.38);
+      --crimson: #e11d48;
+      --emerald: #10b981;
+      --gold: #eab308;
+      --purple: #a855f7;
+      --text: #f8f5fa;
+      --muted: #a392ad;
+      --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: 'Manrope', system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background:
+        radial-gradient(circle at 12% 8%, rgba(225, 29, 72, 0.16), transparent 42%),
+        radial-gradient(circle at 88% 88%, rgba(168, 85, 247, 0.12), transparent 45%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      padding: 0.75rem;
+      font-size: 13px;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 0.7rem; }
+    .head {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .head h1 { font-size: 1rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+    .head span { font-family: var(--mono); font-size: 0.7rem; color: #fda4af; display: block; }
+    .nav { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .pill {
+      text-decoration: none; font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
+      padding: 0.3rem 0.6rem; border-radius: 8px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12); color: var(--text);
+    }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.55rem; }
+    .item-card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+    }
+    .item-card:hover, .item-card.active {
+      border-color: var(--crimson);
+      box-shadow: 0 0 0 2px rgba(225,29,72,0.22);
+    }
+    .item-card h3 { font-size: 0.84rem; font-weight: 800; }
+    .item-card p { font-size: 0.72rem; color: var(--muted); }
+    .price-tag {
+      font-family: var(--mono); font-size: 0.75rem; font-weight: 700;
+      color: #fde047; background: rgba(234,179,8,0.12);
+      border: 1px solid rgba(234,179,8,0.35);
+      padding: 0.2rem 0.45rem; border-radius: 6px; align-self: flex-start;
+    }
+    .checkout {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .r3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; }
+    @media (max-width: 600px) { .r2, .r3 { grid-template-columns: 1fr; } }
+    input, select {
+      width: 100%; background: rgba(0,0,0,0.52); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 9px; padding: 0.55rem 0.7rem; color: #fff; font-family: var(--mono); font-size: 0.78rem; outline: none;
+    }
+    input:focus, select:focus { border-color: var(--crimson); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      width: 100%; padding: 0.62rem 0.85rem; border-radius: 9px; font-weight: 800;
+      font-size: 0.8rem; text-decoration: none; cursor: pointer; border: 1px solid transparent;
+    }
+    .b-purp { background: linear-gradient(135deg, #a855f7, #7e22ce); color: #fff; }
+    .b-red { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; }
+    .b-wa { background: linear-gradient(135deg, #10b981, #059669); color: #03150e; }
+    .b-dim { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); color: var(--text); }
+    .wallet-bar {
+      display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+      font-family: var(--mono); font-size: 0.72rem; background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,255,255,0.2); padding: 0.48rem 0.65rem; border-radius: 8px;
+    }
+    .out {
+      font-family: var(--mono); font-size: 0.74rem; background: #050307;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 9px; padding: 0.6rem 0.75rem;
+      color: #d6cce0; min-height: 2.8rem; word-break: break-word;
+    }
+    .out.ok { border-color: rgba(16,185,129,0.5); color: #a7f3d0; }
+    .out.err { border-color: rgba(225,29,72,0.5); color: #fecdd3; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="head">
+      <div>
+        <h1>🖤 OUR VELVET // QUICK SOLANA SHOP 18+</h1>
+        <span>INTIMO · FOTO &amp; VIDEO RISERVATI · SLAVE MONEY · NON-CUSTODIAL</span>
+      </div>
+      <nav class="nav">
+        <a class="pill" href="https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n" target="_blank">Canale WA ↗</a>
+        <a class="pill" href="/dashboard.html">Radar 30km</a>
+        <a class="pill" href="/lodge-card.html">Lodge Card</a>
+      </nav>
+    </header>
+
+    <!-- VETRINA RAPIDA 4 CATEGORIE -->
+    <section class="cards" id="catalogGrid">
+      <div class="item-card active" data-code="PHOTO-VIDEO-PACK" data-sol="0.12" onclick="selectItem(this)">
+        <div>
+          <h3>📸 Foto &amp; Video 18+</h3>
+          <p>Set foto/video privato sbloccato subito dopo verifica Tx Solana.</p>
+        </div>
+        <span class="price-tag">0.12 SOL / $OV</span>
+      </div>
+
+      <div class="item-card" data-code="INTIMO-WORN-DROP" data-sol="0.35" onclick="selectItem(this)">
+        <div>
+          <h3>👙 Intimo Esclusivo</h3>
+          <p>Capo intimo selezionato + nota privata sul ponte WhatsApp.</p>
+        </div>
+        <span class="price-tag">0.35 SOL / $OV</span>
+      </div>
+
+      <div class="item-card" data-code="SLAVE-TRIBUTE-BASE" data-sol="0.10" onclick="selectItem(this)">
+        <div>
+          <h3>⛓️ Slave Money · Tributo</h3>
+          <p>Tributo consensuale immediato + incremento Devotion nel Nexus.</p>
+        </div>
+        <span class="price-tag">0.10 SOL / $OV</span>
+      </div>
+
+      <div class="item-card" data-code="SLAVE-TRIBUTE-SUPREMO" data-sol="0.50" onclick="selectItem(this)">
+        <div>
+          <h3>👑 Slave Money · Supremo</h3>
+          <p>Tributo maggiore + priorità diretta nella Loggia e Radar 30km.</p>
+        </div>
+        <span class="price-tag">0.50 SOL / $OV</span>
+      </div>
+    </section>
+
+    <!-- CHECKOUT ISTANTANEO SOLANA -->
+    <section class="checkout">
+      <div class="wallet-bar">
+        <span id="treasuryText">6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD</span>
+        <button class="btn b-dim" style="width:auto;padding:0.28rem 0.55rem;font-size:0.7rem;" onclick="copyTreasury()">Copia Wallet</button>
+      </div>
+
+      <div class="r3">
+        <input type="text" id="itemCodeInput" value="PHOTO-VIDEO-PACK" />
+        <input type="number" id="amountInput" value="0.12" step="0.01" min="0.01" />
+        <select id="currencySelect">
+          <option value="SOL">Valuta: SOL (Nativo)</option>
+          <option value="OV">Valuta: $OV (Our Velvet)</option>
+          <option value="DSN">Valuta: $DSN (xZDOS)</option>
+        </select>
+      </div>
+
+      <div class="r2">
+        <input type="text" id="ovIdInput" placeholder="Tuo ID $OV (es. OV-XXXX-VELVET)" />
+        <input type="text" id="contactInput" placeholder="Contatto consegna (WhatsApp / @Telegram)" />
+      </div>
+
+      <div class="r2">
+        <button class="btn b-purp" type="button" onclick="payWithSolanaWallet()">⚡ Paga con Phantom / Solflare ↗</button>
+        <a class="btn b-dim" href="https://swap.x-zdos.it/" target="_blank">Converti in $OV / $DSN su ZSwap ↗</a>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:0.55rem;display:flex;flex-direction:column;gap:0.45rem;">
+        <input type="text" id="txSigInput" placeholder="Incolla qui la Signature Tx Solana dopo il pagamento..." />
+        <div class="r2">
+          <button class="btn b-red" type="button" onclick="verifySolanaOrder()">✅ Verifica Pagamento &amp; Sblocca</button>
+          <a class="btn b-wa" id="waReceiptBtn" href="https://wa.me/447742507902?text=!shop" target="_blank">Invia Ricevuta su WhatsApp ↗</a>
+        </div>
+      </div>
+
+      <div class="out" id="shopConsole">Seleziona un pacchetto (Intimo, Foto/Video o Slave Money), paga su Solana e verifica la Tx Signature.</div>
+    </section>
+  </div>
+
+  <script>
+    const TREASURY = "6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD";
+    const OV_MINT = "2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump";
+    const DSN_MINT = "35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4";
+
+    function selectItem(el) {
+      document.querySelectorAll(".item-card").forEach(c => c.classList.remove("active"));
+      el.classList.add("active");
+      document.getElementById("itemCodeInput").value = el.dataset.code;
+      document.getElementById("amountInput").value = el.dataset.sol;
+    }
+
+    function copyTreasury() {
+      navigator.clipboard.writeText(TREASURY).then(() => {
+        const out = document.getElementById("shopConsole");
+        out.className = "out ok";
+        out.textContent = "📋 Wallet Tesoreria copiato: " + TREASURY;
+      });
+    }
+
+    function payWithSolanaWallet() {
+      const code = document.getElementById("itemCodeInput").value.trim() || "VELVET-DROP";
+      const amt = document.getElementById("amountInput").value || "0.10";
+      const cur = document.getElementById("currencySelect").value;
+      const out = document.getElementById("shopConsole");
+
+      let uri = "solana:" + TREASURY + "?amount=" + encodeURIComponent(amt) + "&label=" + encodeURIComponent("Our Velvet " + code);
+      if (cur === "OV") uri += "&spl-token=" + OV_MINT;
+      if (cur === "DSN") uri += "&spl-token=" + DSN_MINT;
+
+      out.className = "out ok";
+      out.textContent = "⚡ Apertura wallet Solana (" + amt + " " + cur + ") verso " + TREASURY.slice(0, 6) + "... Dopo la conferma incolla la Tx Signature qui sotto.";
+      window.location.href = uri;
+    }
+
+    async function verifySolanaOrder() {
+      const txSignature = document.getElementById("txSigInput").value.trim();
+      const ovId = document.getElementById("ovIdInput").value.trim().toUpperCase();
+      const itemCode = document.getElementById("itemCodeInput").value.trim();
+      const currency = document.getElementById("currencySelect").value;
+      const amount = Number(document.getElementById("amountInput").value || 0);
+      const contact = document.getElementById("contactInput").value.trim();
+      const out = document.getElementById("shopConsole");
+
+      if (!txSignature) {
+        out.className = "out err";
+        out.textContent = "❌ Incolla prima la Signature della transazione Solana.";
+        return;
+      }
+
+      out.className = "out";
+      out.textContent = "⏳ Verifica on-chain su Solana Mainnet in corso...";
+
+      try {
+        const res = await fetch("/api/shop/verify-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ txSignature, ovId, itemCode, currency, amount, contact })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok && data.order) {
+          const o = data.order;
+          const waMsg = "!order " + o.id + " | " + o.itemCode + " | TX:" + o.txSignature.slice(0, 12) + "...";
+          document.getElementById("waReceiptBtn").href = "https://wa.me/447742507902?text=" + encodeURIComponent(waMsg);
+          out.className = "out ok";
+          out.innerHTML =
+            "✅ <strong>PAGAMENTO VERIFICATO (" + o.id + ")</strong> · Articolo: <strong>" + o.itemTitle + "</strong> · Ricevuto: <strong>" + (o.verifiedSolReceived || o.declaredAmount) + " " + o.currency + "</strong><br>Premi 'Invia Ricevuta su WhatsApp' per ricevere immediatamente foto/video o conferma.";
+        } else {
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Verifica fallita.");
+        }
+      } catch (e) {
+        out.className = "out err";
+        out.textContent = "⚠️ Errore connessione al Nexus.";
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("item")) document.getElementById("itemCodeInput").value = params.get("item").toUpperCase();
+      if (params.get("sol")) document.getElementById("amountInput").value = params.get("sol");
+      if (params.get("cur")) document.getElementById("currencySelect").value = params.get("cur").toUpperCase();
+      const savedOv = localStorage.getItem("zdos_velvet_ov_id");
+      if (savedOv) document.getElementById("ovIdInput").value = savedOv;
+    });
+  </script>
+</body>
+</html>
