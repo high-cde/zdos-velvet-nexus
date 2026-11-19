@@ -1,3 +1,65 @@
+// === VELVET CITY (REAL GAME · PORN · AGI/UMANO) PRESET ===
+const VELVET_CITY_STRUCTURE = {
+  cityName: "VELVET CITY // REAL GAME · PORN · AGI/UMANO",
+  links: {
+    hub: "https://velvet.x-zdos.it",
+    swap: "https://swap.x-zdos.it",
+    quest: "https://quest.x-zdos.it",
+    whatsapp: "https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n",
+    discord: "https://discord.gg/BcMh6vcpQX",
+    tokens: {
+      OV: "2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump",
+      DSN: "35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4"
+    }
+  },
+  roles: [
+    "Sovereign / Mistress",
+    "AGI Core",
+    "Umano Verificato",
+    "Player / Real Game",
+    "VIP Velvet ($OV / $DSN)",
+    "Guest 18+"
+  ],
+  categories: [
+    {
+      name: "01 · VELVET CITY — GATE 18+",
+      nsfw: false,
+      channels: [
+        { name: "welcome-gate", type: "text", nsfw: false },
+        { name: "agi-umano-manifesto", type: "text", nsfw: false },
+        { name: "portal-keys", type: "text", nsfw: false }
+      ]
+    },
+    {
+      name: "02 · REAL GAME LOUNGE",
+      nsfw: false,
+      channels: [
+        { name: "game-arena", type: "text", nsfw: false },
+        { name: "live-drops", type: "text", nsfw: false },
+        { name: "Velvet City Arena", type: "voice", nsfw: false }
+      ]
+    },
+    {
+      name: "03 · AFTER DARK & EROS 18+",
+      nsfw: true,
+      channels: [
+        { name: "after-dark-lounge", type: "text", nsfw: true },
+        { name: "private-requests", type: "text", nsfw: true },
+        { name: "After Dark Lounge", type: "voice", nsfw: true }
+      ]
+    },
+    {
+      name: "04 · SOVEREIGN OPS & LOGS",
+      nsfw: false,
+      privateOps: true,
+      channels: [
+        { name: "nexus-telemetry", type: "text", nsfw: false },
+        { name: "audit-logs", type: "text", nsfw: false }
+      ]
+    }
+  ]
+};
+
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const sqlite3 = require('sqlite3').verbose();
 
