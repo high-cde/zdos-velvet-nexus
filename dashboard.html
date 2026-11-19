@@ -358,7 +358,17 @@
           </div>
         </div>
 
-        <div class="console-out" id="ovConsole">In attesa di verifica sigillo OV-XXXX-VELVET...</div>
+        
+          <div style="margin-top:0.55rem;padding-top:0.55rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:0.5rem;">
+            <input type="text" id="mintWalletInput" placeholder="Wallet Solana per ID Reale (opzionale se usi WA/X)" />
+            <div class="row-2">
+              <input type="text" id="mintWaInput" placeholder="WhatsApp (+39... / +44...)" />
+              <input type="text" id="mintXInput" placeholder="Handle X (@tuohandle)" />
+            </div>
+            <button class="btn btn-wa" type="button" onclick="issueRealGlobalId()">⚡ Genera ID Globale Reale ($OV)</button>
+          </div>
+
+        <div class="console-out" id="ovConsole">In attesa di verifica o emissione ID Globale Reale...</div>
       </section>
 
       <!-- 3. CANALE WHATSAPP 18+ & PONTE DIRETTI -->
@@ -658,6 +668,43 @@
       } catch (e) {
         out.className = "console-out err";
         out.textContent = "⚠️ Errore di rete su /api/meat-radar/scan.";
+      }
+    }
+
+    
+    async function issueRealGlobalId() {
+      const wallet = document.getElementById("mintWalletInput").value.trim();
+      const waPhone = document.getElementById("mintWaInput").value.trim();
+      const xHandle = document.getElementById("mintXInput").value.trim();
+      const role = document.getElementById("radarRoleSelect")?.value || "Citizen 18+";
+      const out = document.getElementById("ovConsole");
+
+      out.className = "console-out";
+      out.textContent = "⚡ Generazione ID Globale Reale e attestazione on-chain Solana...";
+
+      try {
+        const res = await fetch("/api/global-id/issue", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ wallet, waPhone, xHandle, role, consent18Plus: true })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          syncOvInputs(data.ovId);
+          out.className = "console-out ok";
+          out.innerHTML =
+            "✅ <strong>ID GLOBALE REALE EMESSO:</strong> " + data.ovId +
+            "<br>Stato: <strong>" + data.status + "</strong> · Hash: <code>" + data.passportHash.slice(0, 14) + "...</code>" +
+            "<br>Attestazione Solana: $OV=" + (data.attestation?.ovBalance ?? 0) + " | $DSN=" + (data.attestation?.dsnBalance ?? 0);
+          loadTelemetry();
+          loadBridgeStatus();
+        } else {
+          out.className = "console-out err";
+          out.textContent = "❌ " + (data.error || "Errore emissione ID Globale.");
+        }
+      } catch (e) {
+        out.className = "console-out err";
+        out.textContent = "⚠️ Ponte Nexus non raggiungibile su /api/global-id/issue.";
       }
     }
 
