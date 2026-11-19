@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VELVET CITY // MEAT RADAR 30KM & COMMAND DECK</title>
+  <title>VELVET // MEAT RADAR 30KM</title>
   <style>
     :root {
       --bg: #070409;
-      --panel: rgba(18, 10, 24, 0.88);
-      --border: rgba(225, 29, 72, 0.38);
+      --panel: rgba(18, 10, 24, 0.9);
+      --border: rgba(225, 29, 72, 0.36);
       --crimson: #e11d48;
-      --crimson-glow: rgba(225, 29, 72, 0.28);
       --emerald: #10b981;
       --gold: #eab308;
       --cyan: #06b6d4;
       --purple: #a855f7;
       --text: #f8f5fa;
-      --muted: #9d8ca6;
+      --muted: #a392ad;
       --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
       --sans: 'Manrope', system-ui, -apple-system, sans-serif;
     }
@@ -25,504 +24,441 @@
 
     body {
       background:
-        radial-gradient(circle at 12% 8%, rgba(225, 29, 72, 0.16), transparent 42%),
-        radial-gradient(circle at 88% 88%, rgba(16, 185, 129, 0.09), transparent 45%),
+        radial-gradient(circle at 15% 5%, rgba(225, 29, 72, 0.14), transparent 42%),
+        radial-gradient(circle at 85% 90%, rgba(16, 185, 129, 0.08), transparent 45%),
         var(--bg);
       color: var(--text);
       font-family: var(--sans);
       min-height: 100vh;
-      padding: 1.25rem;
-      line-height: 1.5;
+      padding: 0.65rem;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
-    .container { max-width: 1240px; margin: 0 auto; }
+    .wrap { max-width: 1260px; margin: 0 auto; }
 
-    /* TOP BAR */
+    /* COMPACT TOPBAR */
     .topbar {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      justify-content: space-between;
+      gap: 0.45rem 0.75rem;
       background: var(--panel);
-      backdrop-filter: blur(16px);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1rem 1.4rem;
-      margin-bottom: 1.4rem;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.65);
+      border-radius: 12px;
+      padding: 0.55rem 0.8rem;
+      margin-bottom: 0.65rem;
     }
 
-    .brand { display: flex; align-items: center; gap: 0.75rem; }
-
-    .pulse-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--crimson);
-      box-shadow: 0 0 14px var(--crimson);
-      animation: blink 1.8s infinite;
+    .brand { display: flex; align-items: center; gap: 0.45rem; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--crimson); box-shadow: 0 0 10px var(--crimson);
+      flex-shrink: 0;
     }
+    .brand h1 { font-size: 0.92rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+    .brand sub { font-family: var(--mono); font-size: 0.65rem; color: #fda4af; }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.88); }
-    }
-
-    .brand h1 { font-size: 1.18rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
-    .brand span { font-family: var(--mono); font-size: 0.74rem; color: #fda4af; display: block; }
-
-    .telemetry-strip {
+    .stats-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
+      gap: 0.35rem;
       font-family: var(--mono);
-      font-size: 0.74rem;
+      font-size: 0.68rem;
     }
-
-    .t-pill {
-      padding: 0.38rem 0.75rem;
-      border-radius: 999px;
+    .stat {
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 7px;
+      padding: 0.22rem 0.48rem;
+      white-space: nowrap;
     }
 
-    .quick-nav { display: flex; flex-wrap: wrap; gap: 0.55rem; }
-
-    .nav-pill {
+    .nav-strip { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .pill {
       text-decoration: none;
       font-family: var(--mono);
-      font-size: 0.75rem;
+      font-size: 0.67rem;
       font-weight: 600;
-      padding: 0.45rem 0.82rem;
-      border-radius: 999px;
+      padding: 0.25rem 0.52rem;
+      border-radius: 7px;
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.12);
       color: var(--text);
-      transition: all 0.15s ease;
     }
+    .pill:hover { border-color: var(--crimson); background: rgba(225,29,72,0.18); }
 
-    .nav-pill:hover { border-color: var(--crimson); background: rgba(225, 29, 72, 0.18); transform: translateY(-1px); }
-
-    /* GRID */
+    /* DENSE GRID */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 0.6rem;
     }
 
-    .module {
+    .box {
       background: var(--panel);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 18px;
-      padding: 1.35rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 13px;
+      padding: 0.72rem 0.8rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 1rem;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.52);
+      gap: 0.48rem;
     }
+    .box.hot { border-color: var(--border); }
+    .box.wide { grid-column: 1 / -1; }
 
-    .module.highlight { border-color: var(--border); }
-    .module.span-2 { grid-column: span 2; }
-    @media (max-width: 820px) { .module.span-2 { grid-column: span 1; } }
-
-    .mod-head {
+    .box-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      padding-bottom: 0.7rem;
+      justify-content: space-between;
+      gap: 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      padding-bottom: 0.38rem;
     }
-
-    .mod-head h2 { font-size: 1rem; font-weight: 700; letter-spacing: 0.03em; display: flex; align-items: center; gap: 0.5rem; }
-
-    .tag {
+    .box-head h2 { font-size: 0.84rem; font-weight: 800; letter-spacing: 0.02em; }
+    .badge {
       font-family: var(--mono);
-      font-size: 0.68rem;
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      background: rgba(225, 29, 72, 0.16);
+      font-size: 0.62rem;
+      padding: 0.14rem 0.42rem;
+      border-radius: 5px;
+      background: rgba(225,29,72,0.16);
       color: #fda4af;
-      border: 1px solid rgba(225, 29, 72, 0.3);
+      border: 1px solid rgba(225,29,72,0.28);
+      white-space: nowrap;
     }
 
-    .desc { font-size: 0.84rem; color: var(--muted); }
+    .hint { font-size: 0.73rem; color: var(--muted); }
 
-    .field-group { display: flex; flex-direction: column; gap: 0.55rem; }
-    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
-    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.55rem; }
-    @media (max-width: 600px) { .row-3 { grid-template-columns: 1fr; } }
+    .r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+    .r3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+    @media (max-width: 640px) { .r3 { grid-template-columns: 1fr; } }
 
     input, select {
       width: 100%;
-      background: rgba(0, 0, 0, 0.48);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 10px;
-      padding: 0.65rem 0.8rem;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 8px;
+      padding: 0.45rem 0.6rem;
       color: #fff;
       font-family: var(--mono);
-      font-size: 0.82rem;
+      font-size: 0.74rem;
       outline: none;
     }
-
-    input:focus, select:focus { border-color: var(--crimson); box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.2); }
-
-    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; }
+    input:focus, select:focus { border-color: var(--crimson); }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 0.45rem;
+      gap: 0.32rem;
       width: 100%;
-      padding: 0.68rem 0.9rem;
-      border-radius: 10px;
+      padding: 0.46rem 0.65rem;
+      border-radius: 8px;
       font-family: var(--sans);
-      font-size: 0.83rem;
+      font-size: 0.75rem;
       font-weight: 700;
       text-decoration: none;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: all 0.15s ease;
+      transition: filter 0.12s ease, transform 0.12s ease;
     }
+    .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .b-red { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; }
+    .b-wa { background: linear-gradient(135deg, #10b981, #059669); color: #03150e; }
+    .b-gold { background: rgba(234,179,8,0.14); border-color: rgba(234,179,8,0.4); color: #fde047; }
+    .b-cyan { background: rgba(6,182,212,0.14); border-color: rgba(6,182,212,0.4); color: #67e8f9; }
+    .b-purp { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.4); color: #d8b4fe; }
+    .b-dim { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.12); color: var(--text); }
 
-    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
-    .btn-crimson { background: linear-gradient(135deg, #e11d48, #be123c); color: #fff; box-shadow: 0 6px 18px var(--crimson-glow); }
-    .btn-wa { background: linear-gradient(135deg, #10b981, #059669); color: #03150e; }
-    .btn-gold { background: rgba(234, 179, 8, 0.14); border-color: rgba(234, 179, 8, 0.45); color: #fde047; }
-    .btn-cyan { background: rgba(6, 182, 212, 0.14); border-color: rgba(6, 182, 212, 0.45); color: #67e8f9; }
-    .btn-purple { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.45); color: #d8b4fe; }
-    .btn-ghost { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.14); color: var(--text); }
-
-    .console-out {
+    .out {
       font-family: var(--mono);
-      font-size: 0.76rem;
+      font-size: 0.7rem;
       background: #050307;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 0.72rem 0.85rem;
-      color: #d1c7d8;
-      min-height: 3.4rem;
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 8px;
+      padding: 0.48rem 0.62rem;
+      color: #d6cce0;
+      min-height: 2.2rem;
       word-break: break-word;
     }
+    .out.ok { border-color: rgba(16,185,129,0.45); color: #a7f3d0; }
+    .out.err { border-color: rgba(225,29,72,0.45); color: #fecdd3; }
 
-    .console-out.ok { border-color: rgba(16, 185, 129, 0.45); color: #a7f3d0; }
-    .console-out.err { border-color: rgba(225, 29, 72, 0.45); color: #fecdd3; }
+    .addr-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px dashed rgba(255,255,255,0.16);
+      border-radius: 7px;
+      padding: 0.36rem 0.55rem;
+    }
+    .addr-line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-    /* RADAR TARGET LIST */
     .radar-list {
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
-      max-height: 270px;
+      gap: 0.38rem;
+      max-height: 210px;
       overflow-y: auto;
     }
-
-    .radar-item {
+    .r-item {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
-      gap: 0.6rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(225, 29, 72, 0.25);
-      border-radius: 10px;
-      padding: 0.65rem 0.85rem;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-    }
-
-    .radar-meta strong { color: #fda4af; }
-    .radar-actions { display: flex; gap: 0.4rem; }
-
-    .wallet-box {
+      justify-content: space-between;
+      gap: 0.4rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(225,29,72,0.24);
+      border-radius: 8px;
+      padding: 0.45rem 0.65rem;
       font-family: var(--mono);
       font-size: 0.72rem;
-      background: rgba(255,255,255,0.03);
-      border: 1px dashed rgba(255,255,255,0.18);
-      padding: 0.55rem 0.75rem;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
     }
+    .r-item strong { color: #fda4af; }
 
-    .footer {
-      margin-top: 1.5rem;
+    .foot {
+      margin-top: 0.65rem;
       text-align: center;
       font-family: var(--mono);
-      font-size: 0.75rem;
+      font-size: 0.66rem;
       color: var(--muted);
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- TOP BAR -->
+  <div class="wrap">
+    <!-- TOPBAR COMPATTA -->
     <header class="topbar">
       <div class="brand">
-        <div class="pulse-dot"></div>
+        <span class="dot"></span>
         <div>
-          <h1>VELVET CITY // MEAT RADAR 30KM</h1>
-          <span>NO GAME · DIRECT REALITY · 18+ CONSENSUAL · WHATSAPP NEXUS</span>
+          <h1>VELVET // MEAT RADAR 30KM</h1>
+          <sub>18+ CONSENSUAL · REALITY · NEXUS</sub>
         </div>
       </div>
 
-      <div class="telemetry-strip" id="telemetryBar">
-        <span class="t-pill">📡 Nodi Radar 30km: <strong id="telNodes">--</strong></span>
-        <span class="t-pill">🔥 Connessioni Live: <strong id="telLive">--</strong></span>
-        <span class="t-pill">🗝️ Identità $OV: <strong id="telIds">--</strong></span>
+      <div class="stats-row">
+        <span class="stat">30km: <b id="telNodes">--</b></span>
+        <span class="stat">Live: <b id="telLive">--</b></span>
+        <span class="stat">ID $OV: <b id="telIds">--</b></span>
+        <span class="stat">RPC: <b id="rpcState">OK</b></span>
       </div>
 
-      <nav class="quick-nav">
-        <a class="nav-pill" href="https://velvet.x-zdos.it/" target="_blank">🏛️ Portale Velvet</a>
-        <a class="nav-pill" href="https://velvet.x-zdos.it/lodge-card.html" target="_blank">🃏 Lodge Card</a>
-        <a class="nav-pill" href="https://swap.x-zdos.it/" target="_blank">⚡ ZSwap Hub</a>
-        <a class="nav-pill" href="https://x-zdos.it/" target="_blank">🌐 ZDOS Core</a>
+      <nav class="nav-strip">
+        <a class="pill" href="https://velvet.x-zdos.it/" target="_blank">Portale</a>
+        <a class="pill" href="https://velvet.x-zdos.it/lodge-card.html" target="_blank">Lodge Card</a>
+        <a class="pill" href="https://swap.x-zdos.it/" target="_blank">ZSwap</a>
+        <a class="pill" href="https://x-zdos.it/" target="_blank">ZDOS</a>
       </nav>
     </header>
 
-    <!-- MAIN GRID -->
     <main class="grid">
+      <!-- 1. MEAT RADAR 30 KM LIVE -->
+      <section class="box hot wide">
+        <div class="box-head">
+          <h2>🩸 1. Meat Radar 30 km (Pulse · Scan · Lock WA)</h2>
+          <span class="badge">RAGGIO 30 KM · API LIVE</span>
+        </div>
+        <p class="hint">Attiva impulso arrotondato (<code>/api/meat-radar/pulse</code>), scansiona segnali entro 30 km (<code>/api/meat-radar/scan/:ovId</code>) e aggancia su WhatsApp (<code>!lock</code>).</p>
 
-      <!-- MODULO PRINCIPALE: MEAT RADAR 30KM LIVE -->
-      <section class="module highlight span-2">
-        <div>
-          <div class="mod-head">
-            <h2>🩸 1. Radar della Carne 30 km — Segnale Live &amp; Aggancio WhatsApp</h2>
-            <span class="tag">LIVE API · RAGGIO 30 KM</span>
-          </div>
-          <p class="desc" style="margin-top:0.6rem;">
-            Attiva il tuo impulso geodetico arrotondato (<code>POST /api/meat-radar/pulse</code>), scansiona in tempo reale chi è attivo entro <strong>30 km</strong> (<code>GET /api/meat-radar/scan/:ovId</code>) e lancia l'aggancio diretto 18+ consensuale su WhatsApp (<code>!lock</code>).
-          </p>
+        <div class="r3">
+          <input type="text" id="radarOvInput" placeholder="OV-XXXX-VELVET" maxlength="24" />
+          <select id="radarRoleSelect">
+            <option value="Sottomesso / Sub">Ruolo: Sottomesso / Sub</option>
+            <option value="Sovereign / Dominant">Ruolo: Sovereign / Dominant</option>
+            <option value="Mistress / Domme">Ruolo: Mistress / Domme</option>
+            <option value="Switch 18+">Ruolo: Switch 18+</option>
+          </select>
+          <select id="radarModeSelect">
+            <option value="WA-LIVE + IRL-30KM">WA Live + Incontro 30km</option>
+            <option value="WA-SUBMISSION-ONLY">Sottomissione Online WA</option>
+            <option value="IRL-30KM-DIRECT">Diretto Entro 30km</option>
+          </select>
         </div>
 
-        <div class="field-group">
-          <div class="row-3">
-            <input type="text" id="radarOvInput" placeholder="Tuo ID (OV-XXXX-VELVET)" maxlength="24" />
-            <select id="radarRoleSelect">
-              <option value="Sottomesso / Sub">Ruolo: Sottomesso / Sub</option>
-              <option value="Sovereign / Dominant">Ruolo: Sovereign / Dominant</option>
-              <option value="Mistress / Domme">Ruolo: Mistress / Domme</option>
-              <option value="Switch 18+">Ruolo: Switch 18+</option>
-            </select>
-            <select id="radarModeSelect">
-              <option value="WA-LIVE + IRL-30KM">Modalità: WA Live + Incontro 30km</option>
-              <option value="WA-SUBMISSION-ONLY">Modalità: Sottomissione Online WA</option>
-              <option value="IRL-30KM-DIRECT">Modalità: Diretto Entro 30km</option>
-            </select>
-          </div>
-
-          <div class="row-3">
-            <input type="text" id="latInput" placeholder="Latitudine (es. 45.03)" />
-            <input type="text" id="lonInput" placeholder="Longitudine (es. 9.28)" />
-            <button class="btn btn-ghost" type="button" onclick="detectBrowserGPS()">📍 Rileva GPS Browser</button>
-          </div>
-
-          <div class="btn-grid">
-            <button class="btn btn-crimson" type="button" onclick="sendMeatPulseLive()">🩸 Attiva Segnale Carne (Pulse)</button>
-            <button class="btn btn-wa" type="button" onclick="scanMeatRadarLive()">📡 Scansiona Raggio 30 km</button>
-          </div>
+        <div class="r3">
+          <input type="text" id="latInput" placeholder="Lat (es. 45.03)" />
+          <input type="text" id="lonInput" placeholder="Lon (es. 9.28)" />
+          <button class="btn b-dim" type="button" onclick="detectBrowserGPS()">📍 GPS Browser</button>
         </div>
 
-        <div class="console-out" id="radarConsole">Inserisci il tuo OV-XXXX-VELVET e attiva il segnale o avvia la scansione entro 30 km.</div>
+        <div class="r2">
+          <button class="btn b-red" type="button" onclick="sendMeatPulseLive()">🩸 Attiva Segnale (Pulse)</button>
+          <button class="btn b-wa" type="button" onclick="scanMeatRadarLive()">📡 Scansiona 30 km</button>
+        </div>
 
+        <div class="out" id="radarConsole">Radar 30 km pronto. Imposta ID $OV e coordinate o premi Scansiona.</div>
         <div class="radar-list" id="radarResultsList"></div>
       </section>
 
-      <!-- 2. IDENTITÀ GLOBALE $OV & LODGE CARD -->
-      <section class="module highlight">
-        <div>
-          <div class="mod-head">
-            <h2>🗝️ 2. Identità Globale $OV &amp; Loggia</h2>
-            <span class="tag">NEXUS :8899</span>
-          </div>
-          <p class="desc" style="margin-top:0.6rem;">
-            Verifica il tuo sigillo <code>OV-XXXX-VELVET</code>, sincronizza l'ID sul radar e apri la tua <strong>Lodge Card</strong> personale.
-          </p>
+      <!-- 2. IDENTITÀ GLOBALE REALE $OV & LODGE -->
+      <section class="box hot">
+        <div class="box-head">
+          <h2>🗝️ 2. ID Globale Reale $OV &amp; Loggia</h2>
+          <span class="badge">SOLANA + NEXUS</span>
         </div>
 
-        <div class="field-group">
-          <input type="text" id="ovInput" placeholder="OV-XXXX-VELVET (o 4 lettere)" maxlength="24" />
-          <div class="btn-grid">
-            <button class="btn btn-crimson" onclick="verifyOv()">Verifica ID $OV</button>
-            <a class="btn btn-gold" id="lodgeBtn" href="/lodge-card.html" target="_blank">Apri Lodge Card ↗</a>
-          </div>
-          <div class="btn-grid">
-            <button class="btn btn-ghost" onclick="copyCmd('!forge')">Copia !forge</button>
-            <button class="btn btn-ghost" onclick="copyCmd('!portal')">Copia !portal</button>
-          </div>
+        <input type="text" id="ovInput" placeholder="OV-XXXX-VELVET (o 4 char)" maxlength="24" />
+        <div class="r2">
+          <button class="btn b-red" onclick="verifyOv()">Verifica ID</button>
+          <a class="btn b-gold" id="lodgeBtn" href="/lodge-card.html" target="_blank">Lodge Card ↗</a>
         </div>
 
-        
-          <div style="margin-top:0.55rem;padding-top:0.55rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:0.5rem;">
-            <input type="text" id="mintWalletInput" placeholder="Wallet Solana per ID Reale (opzionale se usi WA/X)" />
-            <div class="row-2">
-              <input type="text" id="mintWaInput" placeholder="WhatsApp (+39... / +44...)" />
-              <input type="text" id="mintXInput" placeholder="Handle X (@tuohandle)" />
-            </div>
-            <button class="btn btn-wa" type="button" onclick="issueRealGlobalId()">⚡ Genera ID Globale Reale ($OV)</button>
-          </div>
+        <input type="text" id="mintWalletInput" placeholder="Wallet Solana (per ID Reale)" />
+        <div class="r2">
+          <input type="text" id="mintWaInput" placeholder="WA (+44... / +39...)" />
+          <input type="text" id="mintXInput" placeholder="Handle X (@...)" />
+        </div>
 
-        <div class="console-out" id="ovConsole">In attesa di verifica o emissione ID Globale Reale...</div>
+        <div class="r3">
+          <button class="btn b-wa" type="button" onclick="issueRealGlobalId()">⚡ Emetti ID</button>
+          <button class="btn b-dim" type="button" onclick="copyCmd('!forge')">!forge</button>
+          <button class="btn b-dim" type="button" onclick="copyCmd('!portal')">!portal</button>
+        </div>
+
+        <div class="out" id="ovConsole">Pronto per verifica o emissione ID Globale Reale.</div>
       </section>
 
-      <!-- 3. CANALE WHATSAPP 18+ & PONTE DIRETTI -->
-      <section class="module">
-        <div>
-          <div class="mod-head">
-            <h2>🖤 3. Canale WhatsApp 18+ &amp; Ponte Nexus</h2>
-            <span class="tag">+44 7742 507902</span>
-          </div>
-          <p class="desc" style="margin-top:0.6rem;">
-            Accedi al canale ufficiale <strong>Our Velvet</strong> e invia comandi diretti al nodo WhatsApp per sottomissione e consenso.
-          </p>
+      <!-- 3. WHATSAPP 18+ & AGGANCIO -->
+      <section class="box">
+        <div class="box-head">
+          <h2>🖤 3. WhatsApp 18+ &amp; Lock</h2>
+          <span class="badge">+44 7742 507902</span>
         </div>
 
-        <div class="field-group">
-          <div class="btn-grid">
-            <a class="btn btn-wa" href="https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n" target="_blank">Canale WA 18+ ↗</a>
-            <a class="btn btn-ghost" href="https://wa.me/447742507902?text=!radar" target="_blank">Apri !radar su WA ↗</a>
-          </div>
-          <div class="row-2">
-            <input type="text" id="lockTargetInput" placeholder="OV-XXXX-VELVET da agganciare" />
-            <input type="text" id="lockProtoInput" placeholder="Protocollo (es. Sottomissione WA)" />
-          </div>
-          <div class="btn-grid">
-            <button class="btn btn-crimson" onclick="launchWaLock()">Invia !lock su WhatsApp ↗</button>
-            <button class="btn btn-ghost" onclick="copyCmd('!optoutloc')">Esci dal Radar (!optoutloc)</button>
-          </div>
+        <div class="r2">
+          <a class="btn b-wa" href="https://whatsapp.com/channel/0029Vb9Rbee89inrYLhdem1n" target="_blank">Canale WA 18+ ↗</a>
+          <a class="btn b-dim" href="https://wa.me/447742507902?text=!radar" target="_blank">Ponte !radar ↗</a>
         </div>
 
-        <div class="console-out" id="waConsole">Comandi WA: !pulse · !radar · !lock · !confirm · !abort</div>
+        <div class="r2">
+          <input type="text" id="lockTargetInput" placeholder="Target OV-XXXX-VELVET" />
+          <input type="text" id="lockProtoInput" placeholder="Protocollo WA" />
+        </div>
+
+        <div class="r2">
+          <button class="btn b-red" onclick="launchWaLock()">Invia !lock WA ↗</button>
+          <button class="btn b-dim" onclick="copyCmd('!optoutloc')">!optoutloc</button>
+        </div>
+
+        <div class="out" id="waConsole">Comandi: !pulse · !radar · !lock · !confirm · !abort</div>
       </section>
 
       <!-- 4. ZSWAP HUB ($OV / $DSN) -->
-      <section class="module">
-        <div>
-          <div class="mod-head">
-            <h2>⚡ 4. ZSwap Hub ($OV / $DSN)</h2>
-            <span class="tag">SOLANA MAINNET</span>
-          </div>
-          <p class="desc" style="margin-top:0.6rem;">
-            Scambia <strong>SOL</strong>, <strong>$OV</strong> e <strong>$DSN (xZDOS)</strong> senza intermediari su <code>swap.x-zdos.it</code>.
-          </p>
+      <section class="box">
+        <div class="box-head">
+          <h2>⚡ 4. ZSwap Hub ($OV / $DSN)</h2>
+          <span class="badge">MAINNET</span>
         </div>
 
-        <div class="field-group">
-          <div class="row-2">
-            <select id="swapFrom">
-              <option value="SOL">Da: SOL</option>
-              <option value="OV">Da: $OV (Velvet)</option>
-              <option value="DSN">Da: $DSN (xZDOS)</option>
-            </select>
-            <select id="swapTo">
-              <option value="OV">A: $OV (Velvet)</option>
-              <option value="DSN">A: $DSN (xZDOS)</option>
-              <option value="SOL">A: SOL</option>
-            </select>
-          </div>
-          <input type="number" id="swapAmount" placeholder="Importo (es. 0.25)" step="0.01" min="0" />
-          <div class="btn-grid">
-            <button class="btn btn-cyan" onclick="openZSwap()">Apri ZSwap Hub ↗</button>
-            <button class="btn btn-ghost" onclick="copyText('2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump', 'CA $OV', 'swapConsole')">Copia CA $OV</button>
-          </div>
-          <button class="btn btn-ghost" onclick="copyText('35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4', 'CA $DSN', 'swapConsole')">Copia CA $DSN (xZDOS)</button>
+        <div class="r2">
+          <select id="swapFrom">
+            <option value="SOL">Da: SOL</option>
+            <option value="OV">Da: $OV</option>
+            <option value="DSN">Da: $DSN</option>
+          </select>
+          <select id="swapTo">
+            <option value="OV">A: $OV</option>
+            <option value="DSN">A: $DSN</option>
+            <option value="SOL">A: SOL</option>
+          </select>
         </div>
 
-        <div class="console-out" id="swapConsole">$OV: 2EN6Y1zM...spump | $DSN: 35w74RT7...HR3F4</div>
+        <input type="number" id="swapAmount" placeholder="Importo (es. 0.25)" step="0.01" min="0" />
+
+        <div class="r3">
+          <button class="btn b-cyan" onclick="openZSwap()">ZSwap ↗</button>
+          <button class="btn b-dim" onclick="copyText('2EN6Y1zM4yyt41gE2muzdJSAgRCAZiXqnmkgpbrspump', 'CA $OV', 'swapConsole')">CA $OV</button>
+          <button class="btn b-dim" onclick="copyText('35w74RT77BPSYNpmzpvxmR9wu2ihpgzubKy4bkGHR3F4', 'CA $DSN', 'swapConsole')">CA $DSN</button>
+        </div>
+
+        <div class="out" id="swapConsole">$OV: 2EN6Y1zM...spump · $DSN: 35w74RT7...HR3F4</div>
       </section>
 
-      <!-- 5. SEND & PORTALI ECOSISTEMA -->
-      <section class="module">
-        <div>
-          <div class="mod-head">
-            <h2>💸 5. Send Solana &amp; Varchi Sovrani</h2>
-            <span class="tag">NON-CUSTODIAL</span>
-          </div>
-          <p class="desc" style="margin-top:0.6rem;">
-            Trasferimenti diretti Phantom/Solflare, associazione <code>!wallet</code> e accesso rapido a Discord, Telegram e ZDOS.
-          </p>
+      <!-- 5. SEND SOLANA & VARCHI -->
+      <section class="box">
+        <div class="box-head">
+          <h2>💸 5. Send &amp; Portali</h2>
+          <span class="badge">NON-CUSTODIAL</span>
         </div>
 
-        <div class="field-group">
-          <div class="wallet-box">
-            <span>6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD</span>
-            <button class="btn btn-ghost" style="width:auto;padding:0.35rem 0.6rem;font-size:0.72rem;" onclick="copyText('6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD', 'Tesoreria', 'sendConsole')">Copia</button>
-          </div>
-          <input type="text" id="userWalletInput" placeholder="Il tuo indirizzo wallet Solana..." />
-          <div class="btn-grid">
-            <button class="btn btn-purple" onclick="sendSolanaDeepLink()">Invia via Phantom ↗</button>
-            <button class="btn btn-ghost" onclick="copyWalletCmd()">Copia !wallet</button>
-          </div>
-          <div class="btn-grid">
-            <a class="btn btn-ghost" href="https://discord.gg/BcMh6vcpQX" target="_blank">Discord Velvet ↗</a>
-            <a class="btn btn-ghost" href="https://t.me/RedVelvetOfficial_bot" target="_blank">Telegram Bot ↗</a>
-          </div>
+        <div class="addr-line">
+          <span>6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD</span>
+          <button class="btn b-dim" style="width:auto;padding:0.22rem 0.45rem;font-size:0.66rem;" onclick="copyText('6C61wDacAtx3QHQYVw17fnm5GEaEAnc1XienNJKn2bsD', 'Tesoreria', 'sendConsole')">Copia</button>
         </div>
 
-        <div class="console-out" id="sendConsole">Tesoreria Velvet e nodi ZDOS pronti.</div>
+        <input type="text" id="userWalletInput" placeholder="Tuo indirizzo wallet Solana..." />
+
+        <div class="r2">
+          <button class="btn b-purp" onclick="sendSolanaDeepLink()">Phantom Send ↗</button>
+          <button class="btn b-dim" onclick="copyWalletCmd()">Copia !wallet</button>
+        </div>
+
+        <div class="r3">
+          <a class="btn b-dim" href="https://discord.gg/BcMh6vcpQX" target="_blank">Discord ↗</a>
+          <a class="btn b-dim" href="https://t.me/RedVelvetOfficial_bot" target="_blank">TG Bot ↗</a>
+          <a class="btn b-dim" href="https://x-zdos.it/ide/" target="_blank">IDE ↗</a>
+        </div>
+
+        <div class="out" id="sendConsole">Tesoreria e varchi attivi.</div>
       </section>
 
-
-      <!-- 6. OMNI HANDLE BRIDGE (X <-> WHATSAPP <-> TELEGRAM) -->
-      <section class="module highlight span-2" id="omniBridgeModule">
-        <div>
-          <div class="mod-head">
-            <h2>🌉 6. Omni Handle Bridge — X · WhatsApp · Telegram</h2>
-            <span class="tag" id="bridgeBadge">LINKED: -- | X QUEUE: --</span>
-          </div>
-          <p class="desc" style="margin-top:0.6rem;">
-            Collega il tuo handle <strong>X</strong>, il numero <strong>WhatsApp</strong>, l'utente <strong>Telegram</strong> e il sigillo <code>$OV</code> in un'unica identità (<code>POST /api/bridge/link</code>) e trasmetti messaggi unificati cross-canale (<code>POST /api/bridge/dispatch</code>).
-          </p>
+      <!-- 6. OMNI HANDLE BRIDGE (X + WA + TG) -->
+      <section class="box hot wide" id="omniBridgeModule">
+        <div class="box-head">
+          <h2>🌉 6. Omni Handle Bridge (X · WhatsApp · Telegram)</h2>
+          <span class="badge" id="bridgeBadge">LINKED: -- | X: --</span>
         </div>
 
-        <div class="field-group">
-          <div class="row-3">
-            <input type="text" id="brgOvInput" placeholder="Sigillo $OV (OV-XXXX-VELVET)" maxlength="24" />
-            <input type="text" id="brgXInput" placeholder="Handle X (es. @high_cde)" />
-            <input type="text" id="brgTgInput" placeholder="User Telegram (es. @Rubina)" />
-          </div>
-
-          <div class="row-2">
-            <input type="text" id="brgWaInput" placeholder="Telefono WhatsApp (es. +447742507902)" />
-            <button class="btn btn-crimson" type="button" onclick="linkOmniHandle()">🔗 Collega Identità X + WA + TG</button>
-          </div>
-
-          <div class="row-3" style="margin-top:0.35rem;">
-            <input type="text" id="brgToInput" placeholder="Destinatario (OV-ID, @handle o vuoto = Broadcast)" />
-            <input type="text" id="brgMsgInput" placeholder="Messaggio o ordine da inviare cross-canale..." />
-            <select id="brgTargetsSelect">
-              <option value="whatsapp,telegram,x">Canali: WhatsApp + Telegram + X</option>
-              <option value="whatsapp,telegram">Canali: WhatsApp + Telegram</option>
-              <option value="whatsapp">Solo WhatsApp</option>
-              <option value="telegram">Solo Telegram</option>
-              <option value="x">Solo Coda X</option>
-            </select>
-          </div>
-
-          <div class="btn-grid">
-            <button class="btn btn-wa" type="button" onclick="dispatchOmniMessage()">⚡ Invia Dispatch Unificato</button>
-            <button class="btn btn-ghost" type="button" onclick="loadBridgeStatus()">🔄 Aggiorna Stato Bridge</button>
-          </div>
+        <div class="r3">
+          <input type="text" id="brgOvInput" placeholder="OV-XXXX-VELVET" maxlength="24" />
+          <input type="text" id="brgXInput" placeholder="Handle X (@...)" />
+          <input type="text" id="brgTgInput" placeholder="Telegram (@...)" />
         </div>
 
-        <div class="console-out" id="bridgeConsole">Bridge Omnicanale pronto. Collega i tuoi handle o invia un messaggio unificato.</div>
+        <div class="r2">
+          <input type="text" id="brgWaInput" placeholder="WhatsApp (+44...)" />
+          <button class="btn b-red" type="button" onclick="linkOmniHandle()">🔗 Collega X + WA + TG</button>
+        </div>
+
+        <div class="r3">
+          <input type="text" id="brgToInput" placeholder="Target (OV-ID / @handle / vuoto)" />
+          <input type="text" id="brgMsgInput" placeholder="Messaggio unificato..." />
+          <select id="brgTargetsSelect">
+            <option value="whatsapp,telegram,x">WA + TG + X</option>
+            <option value="whatsapp,telegram">WA + TG</option>
+            <option value="whatsapp">Solo WA</option>
+            <option value="telegram">Solo TG</option>
+            <option value="x">Solo Coda X</option>
+          </select>
+        </div>
+
+        <div class="r2">
+          <button class="btn b-wa" type="button" onclick="dispatchOmniMessage()">⚡ Dispatch Unificato</button>
+          <button class="btn b-dim" type="button" onclick="loadBridgeStatus()">🔄 Stato Bridge</button>
+        </div>
+
+        <div class="out" id="bridgeConsole">Bridge X · WhatsApp · Telegram pronto.</div>
       </section>
-
     </main>
 
-    <footer class="footer">
-      VELVET CITY · MEAT RADAR 30KM · NO SIMULATION · 18+ CONSENSUAL ONLY · BUILD WHAT YOU CAN PROVE ⚡
+    <footer class="foot">
+      VELVET CITY · MEAT RADAR 30KM · 18+ CONSENSUAL · BUILD WHAT YOU CAN PROVE ⚡
     </footer>
   </div>
 
   <script>
     const STORAGE_OV = "zdos_velvet_ov_id";
+    const RPC_ENDPOINTS = [
+      "/api/solana-rpc",
+      "https://api.mainnet-beta.solana.com",
+      "https://solana-rpc.publicnode.com"
+    ];
 
     function normalizeOv(raw) {
       let v = String(raw || "").trim().toUpperCase().replace(/[^A-Z0-9-]/g, "");
@@ -532,10 +468,33 @@
 
     function syncOvInputs(ovId) {
       if (!ovId) return;
-      document.getElementById("ovInput").value = ovId;
-      document.getElementById("radarOvInput").value = ovId;
-      document.getElementById("lodgeBtn").href = "/lodge-card.html?ov=" + encodeURIComponent(ovId);
+      ["ovInput", "radarOvInput", "brgOvInput"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.value = ovId;
+      });
+      const lBtn = document.getElementById("lodgeBtn");
+      if (lBtn) lBtn.href = "/lodge-card.html?ov=" + encodeURIComponent(ovId);
       localStorage.setItem(STORAGE_OV, ovId);
+    }
+
+    async function resilientSolanaRpc(method, params = []) {
+      for (const ep of RPC_ENDPOINTS) {
+        try {
+          const r = await fetch(ep, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params })
+          });
+          if (!r.ok) continue;
+          const j = await r.json();
+          if (j && !j.error) {
+            document.getElementById("rpcState").textContent = "LIVE";
+            return j.result;
+          }
+        } catch (e) {}
+      }
+      document.getElementById("rpcState").textContent = "FALLBACK";
+      return null;
     }
 
     async function loadTelemetry() {
@@ -550,25 +509,36 @@
       } catch (e) {}
     }
 
+    async function loadBridgeStatus() {
+      try {
+        const res = await fetch("/api/bridge/status");
+        const data = await res.json();
+        if (data && data.ok) {
+          const badge = document.getElementById("bridgeBadge");
+          if (badge) badge.textContent = "LINKED: " + (data.linkedCount ?? 0) + " | X: " + (data.xOutboxCount ?? 0);
+        }
+      } catch (e) {}
+    }
+
     function detectBrowserGPS() {
       const out = document.getElementById("radarConsole");
       if (!navigator.geolocation) {
-        out.className = "console-out err";
-        out.textContent = "❌ Geolocalizzazione non supportata dal browser. Inserisci Lat/Lon manualmente.";
+        out.className = "out err";
+        out.textContent = "❌ GPS non supportato. Inserisci Lat e Lon.";
         return;
       }
-      out.className = "console-out";
-      out.textContent = "📍 Rilevamento coordinate GPS in corso...";
+      out.className = "out";
+      out.textContent = "📍 Rilevamento coordinate...";
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           document.getElementById("latInput").value = pos.coords.latitude.toFixed(2);
           document.getElementById("lonInput").value = pos.coords.longitude.toFixed(2);
-          out.className = "console-out ok";
-          out.textContent = "✅ Coordinate arrotondate pronte (" + pos.coords.latitude.toFixed(2) + ", " + pos.coords.longitude.toFixed(2) + "). Premi 'Attiva Segnale Carne'.";
+          out.className = "out ok";
+          out.textContent = "✅ Pronte: " + pos.coords.latitude.toFixed(2) + ", " + pos.coords.longitude.toFixed(2);
         },
         (err) => {
-          out.className = "console-out err";
-          out.textContent = "⚠️ Permesso GPS negato o non disponibile (" + err.message + "). Inserisci Lat/Lon manualmente.";
+          out.className = "out err";
+          out.textContent = "⚠️ GPS non disponibile (" + err.message + ").";
         },
         { enableHighAccuracy: false, timeout: 8000 }
       );
@@ -582,20 +552,14 @@
       const mode = document.getElementById("radarModeSelect").value;
       const out = document.getElementById("radarConsole");
 
-      if (!ovId) {
-        out.className = "console-out err";
-        out.textContent = "❌ Inserisci il tuo sigillo OV-XXXX-VELVET prima di attivare il segnale.";
+      if (!ovId || !lat || !lon) {
+        out.className = "out err";
+        out.textContent = "❌ Servono ID $OV, Latitudine e Longitudine.";
         return;
       }
-      if (!lat || !lon) {
-        out.className = "console-out err";
-        out.textContent = "❌ Inserisci Latitudine e Longitudine (o usa Rileva GPS Browser).";
-        return;
-      }
-
       syncOvInputs(ovId);
-      out.className = "console-out";
-      out.textContent = "🩸 Trasmissione segnale carne al Nexus per " + ovId + "...";
+      out.className = "out";
+      out.textContent = "🩸 Invio segnale per " + ovId + "...";
 
       try {
         const res = await fetch("/api/meat-radar/pulse", {
@@ -605,17 +569,17 @@
         });
         const data = await res.json();
         if (res.ok && data.ok) {
-          out.className = "console-out ok";
-          out.innerHTML = "✅ <strong>SEGNALE ATTIVO SU RADAR 30 KM:</strong> " + data.ovId + " | Ruolo: <strong>" + data.role + "</strong> | Settore: " + data.location.lat + ", " + data.location.lon;
+          out.className = "out ok";
+          out.innerHTML = "✅ <strong>ATTIVO:</strong> " + data.ovId + " (" + data.role + ") · " + data.location.lat + ", " + data.location.lon;
           loadTelemetry();
           scanMeatRadarLive();
         } else {
-          out.className = "console-out err";
-          out.textContent = "❌ " + (data.error || "Errore attivazione segnale.");
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Errore pulse.");
         }
       } catch (e) {
-        out.className = "console-out err";
-        out.textContent = "⚠️ Impossibile contattare /api/meat-radar/pulse.";
+        out.className = "out err";
+        out.textContent = "⚠️ Errore rete /api/meat-radar/pulse.";
       }
     }
 
@@ -623,64 +587,80 @@
       const ovId = normalizeOv(document.getElementById("radarOvInput").value || document.getElementById("ovInput").value);
       const out = document.getElementById("radarConsole");
       const list = document.getElementById("radarResultsList");
-
       if (!ovId) {
-        out.className = "console-out err";
-        out.textContent = "❌ Inserisci il tuo sigillo OV-XXXX-VELVET per scansionare il raggio di 30 km.";
+        out.className = "out err";
+        out.textContent = "❌ Inserisci ID $OV per scansionare 30 km.";
         return;
       }
-
       syncOvInputs(ovId);
-      out.className = "console-out";
-      out.textContent = "📡 Scansione segnali attivi entro 30 km da " + ovId + "...";
+      out.className = "out";
+      out.textContent = "📡 Scansione 30 km da " + ovId + "...";
       list.innerHTML = "";
 
       try {
         const res = await fetch("/api/meat-radar/scan/" + encodeURIComponent(ovId));
         const data = await res.json();
         if (!res.ok || !data.ok) {
-          out.className = "console-out err";
-          out.textContent = "❌ " + (data.error || "Scansione non riuscita.");
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Scansione fallita.");
           return;
         }
+        out.className = "out ok";
+        out.innerHTML = "🩸 <strong>" + data.count + "</strong> segnali entro 30 km da " + ovId + ".";
 
-        out.className = "console-out ok";
-        out.innerHTML = "🩸 <strong>RADAR 30 KM COMPLETATO:</strong> " + data.count + " segnali rilevati attorno a " + ovId + ".";
-
-        if (!data.targets || data.targets.length === 0) {
-          list.innerHTML = '<div class="radar-item"><span class="radar-meta">Nessun altro cittadino con impulso attivo nel raggio di 30 km in questo istante.</span></div>';
+        if (!data.targets || !data.targets.length) {
+          list.innerHTML = '<div class="r-item"><span>Nessun altro segnale attivo entro 30 km.</span></div>';
           return;
         }
-
         data.targets.forEach((t) => {
-          const item = document.createElement("div");
-          item.className = "radar-item";
-          const waCmd = "!lock " + t.ovId + " Sottomissione Diretta WhatsApp";
-          const waUrl = "https://wa.me/447742507902?text=" + encodeURIComponent(waCmd);
-          item.innerHTML =
-            '<div class="radar-meta"><strong>' + t.ovId + '</strong> · <span>' + t.distanceKm + ' km</span> · ' + t.role + ' · Devotion: ' + t.devotion + '</div>' +
-            '<div class="radar-actions">' +
-              '<a class="btn btn-wa" style="padding:0.38rem 0.7rem;font-size:0.74rem;" href="' + waUrl + '" target="_blank">Aggancia WA (!lock) ↗</a>' +
-              '<a class="btn btn-gold" style="padding:0.38rem 0.7rem;font-size:0.74rem;" href="/lodge-card.html?ov=' + encodeURIComponent(t.ovId) + '" target="_blank">Card</a>' +
+          const row = document.createElement("div");
+          row.className = "r-item";
+          const waUrl = "https://wa.me/447742507902?text=" + encodeURIComponent("!lock " + t.ovId + " Sottomissione Diretta WA");
+          row.innerHTML =
+            '<div><strong>' + t.ovId + '</strong> · ' + t.distanceKm + ' km · ' + t.role + ' · Dev:' + t.devotion + '</div>' +
+            '<div style="display:flex;gap:0.35rem;">' +
+              '<a class="btn b-wa" style="width:auto;padding:0.28rem 0.52rem;font-size:0.68rem;" href="' + waUrl + '" target="_blank">!lock ↗</a>' +
+              '<a class="btn b-gold" style="width:auto;padding:0.28rem 0.52rem;font-size:0.68rem;" href="/lodge-card.html?ov=' + encodeURIComponent(t.ovId) + '" target="_blank">Card</a>' +
             '</div>';
-          list.appendChild(item);
+          list.appendChild(row);
         });
       } catch (e) {
-        out.className = "console-out err";
-        out.textContent = "⚠️ Errore di rete su /api/meat-radar/scan.";
+        out.className = "out err";
+        out.textContent = "⚠️ Errore rete /api/meat-radar/scan.";
       }
     }
 
-    
+    async function verifyOv() {
+      const ovId = normalizeOv(document.getElementById("ovInput").value);
+      const out = document.getElementById("ovConsole");
+      if (!ovId) { out.className = "out err"; out.textContent = "❌ ID non valido."; return; }
+      syncOvInputs(ovId);
+      out.className = "out";
+      out.textContent = "⏳ Verifica " + ovId + "...";
+      try {
+        const res = await fetch("/api/verify-ov/" + encodeURIComponent(ovId));
+        const data = await res.json();
+        if (res.ok && data && data.valid) {
+          out.className = "out ok";
+          out.innerHTML = "✅ <strong>" + (data.ovId || ovId) + "</strong> · " + (data.status || "VERIFIED") + " · Dev:" + (data.devotion ?? 0);
+        } else {
+          out.className = "out err";
+          out.textContent = "❌ " + ((data && data.error) || "Non trovato. Usa !forge.");
+        }
+      } catch (e) {
+        out.className = "out err";
+        out.textContent = "⚠️ Nexus non raggiungibile.";
+      }
+    }
+
     async function issueRealGlobalId() {
       const wallet = document.getElementById("mintWalletInput").value.trim();
       const waPhone = document.getElementById("mintWaInput").value.trim();
       const xHandle = document.getElementById("mintXInput").value.trim();
       const role = document.getElementById("radarRoleSelect")?.value || "Citizen 18+";
       const out = document.getElementById("ovConsole");
-
-      out.className = "console-out";
-      out.textContent = "⚡ Generazione ID Globale Reale e attestazione on-chain Solana...";
+      out.className = "out";
+      out.textContent = "⚡ Emissione ID Globale Reale...";
 
       try {
         const res = await fetch("/api/global-id/issue", {
@@ -691,62 +671,95 @@
         const data = await res.json();
         if (res.ok && data.ok) {
           syncOvInputs(data.ovId);
-          out.className = "console-out ok";
-          out.innerHTML =
-            "✅ <strong>ID GLOBALE REALE EMESSO:</strong> " + data.ovId +
-            "<br>Stato: <strong>" + data.status + "</strong> · Hash: <code>" + data.passportHash.slice(0, 14) + "...</code>" +
-            "<br>Attestazione Solana: $OV=" + (data.attestation?.ovBalance ?? 0) + " | $DSN=" + (data.attestation?.dsnBalance ?? 0);
+          out.className = "out ok";
+          out.innerHTML = "✅ <strong>" + data.ovId + "</strong> (" + data.status + ") · Hash: <code>" + data.passportHash.slice(0, 12) + "...</code>";
           loadTelemetry();
           loadBridgeStatus();
         } else {
-          out.className = "console-out err";
-          out.textContent = "❌ " + (data.error || "Errore emissione ID Globale.");
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Errore emissione.");
         }
       } catch (e) {
-        out.className = "console-out err";
-        out.textContent = "⚠️ Ponte Nexus non raggiungibile su /api/global-id/issue.";
+        out.className = "out err";
+        out.textContent = "⚠️ Errore /api/global-id/issue.";
       }
     }
 
-    async function verifyOv() {
-      const ovId = normalizeOv(document.getElementById("ovInput").value);
-      const out = document.getElementById("ovConsole");
-      if (!ovId) {
-        out.className = "console-out err";
-        out.textContent = "❌ Inserisci un codice OV-XXXX-VELVET valido.";
+    async function linkOmniHandle() {
+      const ovId = normalizeOv(document.getElementById("brgOvInput").value || document.getElementById("ovInput").value);
+      const xHandle = document.getElementById("brgXInput").value.trim();
+      const tgUser = document.getElementById("brgTgInput").value.trim();
+      const waPhone = document.getElementById("brgWaInput").value.trim();
+      const out = document.getElementById("bridgeConsole");
+      if (!ovId && !xHandle && !tgUser && !waPhone) {
+        out.className = "out err";
+        out.textContent = "❌ Inserisci ID $OV, Handle X, Telegram o WhatsApp.";
         return;
       }
-      syncOvInputs(ovId);
-      out.className = "console-out";
-      out.textContent = "⏳ Verifica sigillo " + ovId + "...";
-
+      out.className = "out";
+      out.textContent = "🔗 Collegamento canali...";
       try {
-        const res = await fetch("/api/verify-ov/" + encodeURIComponent(ovId));
+        const res = await fetch("/api/bridge/link", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ovId, xHandle, tgUser, waPhone })
+        });
         const data = await res.json();
-        if (res.ok && data && data.valid) {
-          out.className = "console-out ok";
-          out.innerHTML = "✅ <strong>ATTIVO:</strong> " + (data.ovId || ovId) + " | Status: " + (data.status || "VERIFIED") + " | Devotion: " + (data.devotion ?? 0);
+        if (res.ok && data.ok && data.user) {
+          if (data.user.ovId) syncOvInputs(data.user.ovId);
+          const ch = data.user.channels || {};
+          out.className = "out ok";
+          out.innerHTML = "✅ <strong>" + data.user.ovId + "</strong> · X:" + (ch.xHandle || "-") + " · WA:" + (ch.waPhone || "-") + " · TG:" + (ch.tgUser || "-");
+          loadBridgeStatus();
         } else {
-          out.className = "console-out err";
-          out.textContent = "❌ " + ((data && data.error) || "Sigillo non trovato. Usa !forge su WhatsApp.");
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Errore bridge.");
         }
       } catch (e) {
-        out.className = "console-out err";
-        out.textContent = "⚠️ Ponte Nexus non raggiungibile.";
+        out.className = "out err";
+        out.textContent = "⚠️ Errore /api/bridge/link.";
+      }
+    }
+
+    async function dispatchOmniMessage() {
+      const fromId = normalizeOv(document.getElementById("brgOvInput").value || document.getElementById("ovInput").value) || document.getElementById("brgXInput").value.trim();
+      const toId = document.getElementById("brgToInput").value.trim();
+      const message = document.getElementById("brgMsgInput").value.trim();
+      const targets = document.getElementById("brgTargetsSelect").value.split(",").filter(Boolean);
+      const out = document.getElementById("bridgeConsole");
+      if (!message) { out.className = "out err"; out.textContent = "❌ Messaggio vuoto."; return; }
+      out.className = "out";
+      out.textContent = "⚡ Dispatch in corso...";
+      try {
+        const res = await fetch("/api/bridge/dispatch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fromId, toId: toId || null, targets, message })
+        });
+        const data = await res.json();
+        if (res.ok && data.ok && data.delivery) {
+          const r = data.delivery.results || {};
+          out.className = "out ok";
+          out.innerHTML = "🚀 <strong>" + data.delivery.id + "</strong> WA=" + (r.whatsapp || "-") + " · TG=" + (r.telegram || "-") + " · X=" + (r.x || "-");
+          document.getElementById("brgMsgInput").value = "";
+          loadBridgeStatus();
+        } else {
+          out.className = "out err";
+          out.textContent = "❌ " + (data.error || "Errore dispatch.");
+        }
+      } catch (e) {
+        out.className = "out err";
+        out.textContent = "⚠️ Errore /api/bridge/dispatch.";
       }
     }
 
     function launchWaLock() {
       const target = normalizeOv(document.getElementById("lockTargetInput").value);
-      const proto = document.getElementById("lockProtoInput").value.trim() || "Sottomissione Diretta WhatsApp";
+      const proto = document.getElementById("lockProtoInput").value.trim() || "Sottomissione Diretta WA";
       const out = document.getElementById("waConsole");
-      if (!target) {
-        out.className = "console-out err";
-        out.textContent = "❌ Inserisci l'ID OV del bersaglio entro 30 km.";
-        return;
-      }
+      if (!target) { out.className = "out err"; out.textContent = "❌ Inserisci ID OV target."; return; }
       const cmd = "!lock " + target + " " + proto;
-      copyText(cmd, "Comando !lock", "waConsole");
+      copyText(cmd, "!lock", "waConsole");
       window.open("https://wa.me/447742507902?text=" + encodeURIComponent(cmd), "_blank", "noopener");
     }
 
@@ -754,10 +767,7 @@
       const from = document.getElementById("swapFrom").value;
       const to = document.getElementById("swapTo").value;
       const amt = document.getElementById("swapAmount").value || "";
-      const url = "https://swap.x-zdos.it/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + (amt ? "&amount=" + encodeURIComponent(amt) : "");
-      document.getElementById("swapConsole").className = "console-out ok";
-      document.getElementById("swapConsole").textContent = "🚀 Apertura ZSwap Hub: " + from + " → " + to;
-      window.open(url, "_blank", "noopener");
+      window.open("https://swap.x-zdos.it/?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + (amt ? "&amount=" + encodeURIComponent(amt) : ""), "_blank", "noopener");
     }
 
     function sendSolanaDeepLink() {
@@ -769,131 +779,29 @@
     function copyWalletCmd() {
       const w = document.getElementById("userWalletInput").value.trim();
       if (!w) {
-        document.getElementById("sendConsole").className = "console-out err";
-        document.getElementById("sendConsole").textContent = "❌ Inserisci prima il tuo indirizzo wallet Solana.";
+        document.getElementById("sendConsole").className = "out err";
+        document.getElementById("sendConsole").textContent = "❌ Inserisci indirizzo wallet.";
         return;
       }
-      copyText("!wallet " + w, "Comando !wallet", "sendConsole");
+      copyText("!wallet " + w, "!wallet", "sendConsole");
     }
 
-    function copyCmd(cmd) { copyText(cmd, "Comando " + cmd, "ovConsole"); }
+    function copyCmd(cmd) { copyText(cmd, cmd, "ovConsole"); }
 
     function copyText(text, label, consoleId) {
       navigator.clipboard.writeText(text).then(() => {
         const el = document.getElementById(consoleId);
-        el.className = "console-out ok";
-        el.textContent = "📋 " + label + " copiato: " + text;
+        if (el) {
+          el.className = "out ok";
+          el.textContent = "📋 " + label + " copiato: " + text;
+        }
       }).catch(() => {});
     }
 
-
-    async function loadBridgeStatus() {
-      try {
-        const res = await fetch("/api/bridge/status");
-        const data = await res.json();
-        if (data && data.ok) {
-          const badge = document.getElementById("bridgeBadge");
-          if (badge) {
-            badge.textContent = "LINKED: " + (data.linkedCount ?? 0) + " | X QUEUE: " + (data.xOutboxCount ?? 0);
-          }
-        }
-      } catch (e) {}
-    }
-
-    async function linkOmniHandle() {
-      const ovRaw = document.getElementById("brgOvInput").value || document.getElementById("ovInput")?.value || "";
-      const ovId = normalizeOv(ovRaw);
-      const xHandle = document.getElementById("brgXInput").value.trim();
-      const tgUser = document.getElementById("brgTgInput").value.trim();
-      const waPhone = document.getElementById("brgWaInput").value.trim();
-      const out = document.getElementById("bridgeConsole");
-
-      if (!ovId && !xHandle && !tgUser && !waPhone) {
-        out.className = "console-out err";
-        out.textContent = "❌ Inserisci almeno un dato tra Sigillo $OV, Handle X, Telegram o WhatsApp.";
-        return;
-      }
-
-      out.className = "console-out";
-      out.textContent = "🔗 Collegamento identità X ↔ WhatsApp ↔ Telegram nel Nexus...";
-
-      try {
-        const res = await fetch("/api/bridge/link", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ovId, xHandle, tgUser, waPhone })
-        });
-        const data = await res.json();
-        if (res.ok && data.ok && data.user) {
-          if (data.user.ovId && typeof syncOvInputs === "function") {
-            syncOvInputs(data.user.ovId);
-            document.getElementById("brgOvInput").value = data.user.ovId;
-          }
-          const ch = data.user.channels || {};
-          out.className = "console-out ok";
-          out.innerHTML =
-            "✅ <strong>BRIDGE ATTIVO:</strong> " + data.user.ovId +
-            " | Token: <strong>" + (data.user.bridgeToken || "-") + "</strong>" +
-            " | X: " + (ch.xHandle || "-") +
-            " | WA: " + (ch.waPhone || "-") +
-            " | TG: " + (ch.tgUser || "-");
-          loadBridgeStatus();
-        } else {
-          out.className = "console-out err";
-          out.textContent = "❌ " + (data.error || "Errore durante il collegamento.");
-        }
-      } catch (e) {
-        out.className = "console-out err";
-        out.textContent = "⚠️ Impossibile contattare /api/bridge/link.";
-      }
-    }
-
-    async function dispatchOmniMessage() {
-      const fromId = normalizeOv(document.getElementById("brgOvInput").value || document.getElementById("ovInput")?.value || "") || document.getElementById("brgXInput").value.trim();
-      const toId = document.getElementById("brgToInput").value.trim();
-      const message = document.getElementById("brgMsgInput").value.trim();
-      const targets = document.getElementById("brgTargetsSelect").value.split(",").filter(Boolean);
-      const out = document.getElementById("bridgeConsole");
-
-      if (!message) {
-        out.className = "console-out err";
-        out.textContent = "❌ Scrivi il messaggio da trasmettere prima di inviare.";
-        return;
-      }
-
-      out.className = "console-out";
-      out.textContent = "⚡ Trasmissione unificata in corso su " + targets.join(", ") + "...";
-
-      try {
-        const res = await fetch("/api/bridge/dispatch", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fromId, toId: toId || null, targets, message })
-        });
-        const data = await res.json();
-        if (res.ok && data.ok && data.delivery) {
-          const r = data.delivery.results || {};
-          out.className = "console-out ok";
-          out.innerHTML =
-            "🚀 <strong>DISPATCH " + data.delivery.id + ":</strong> " +
-            "WA=<code>" + (r.whatsapp || "-") + "</code> · " +
-            "TG=<code>" + (r.telegram || "-") + "</code> · " +
-            "X=<code>" + (r.x || "-") + "</code>";
-          document.getElementById("brgMsgInput").value = "";
-          loadBridgeStatus();
-        } else {
-          out.className = "console-out err";
-          out.textContent = "❌ " + (data.error || "Errore durante il dispatch.");
-        }
-      } catch (e) {
-        out.className = "console-out err";
-        out.textContent = "⚠️ Impossibile contattare /api/bridge/dispatch.";
-      }
-    }
-
     window.addEventListener("DOMContentLoaded", () => {
-      loadBridgeStatus();
       loadTelemetry();
+      loadBridgeStatus();
+      resilientSolanaRpc("getHealth");
       const saved = localStorage.getItem(STORAGE_OV);
       if (saved) {
         syncOvInputs(saved);
