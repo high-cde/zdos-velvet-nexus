@@ -1,1 +1,73 @@
-PLACEHOLDER_FOR_LARGE_CONTENT
+<section id="ourvelvet-generator" class="velvet-box rounded-2xl p-6 space-y-6 border-red-500/80 shadow-[0_0_45px_rgba(255,0,85,0.35)]">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-pink-500/30 pb-3 gap-2">
+<div>
+<span class="text-xs font-bold text-pink-300 font-mono flex items-center gap-2"><span>👑</span> STUDIO SUPREME 18+ // AGI + DIS TEL FUSION</span>
+<p class="text-[10px] text-pink-200/70 mt-1 font-mono">Motore sovrano OurVelvet AGI (zdos-velvet-nexus) + Sync multi-piattaforma DisTel-agi. AI Horde solo fallback. 18+ · consenso · safeword ROSSO.</p>
+</div>
+<span id="x-status-pill" class="px-2.5 py-1 rounded bg-black border border-pink-700 text-pink-300 text-[10px] font-bold font-mono">X non collegato</span>
+</div>
+<div id="studio-gate" class="bg-black/95 p-6 rounded-2xl border border-red-600/50 text-center space-y-4">
+<p class="text-red-400 font-bold font-mono text-xs tracking-widest">18+ ACCESS · STUDIO SUPREME</p>
+<p class="text-pink-100 text-sm max-w-lg mx-auto">Generazione sovrana con AGI interno + propagazione istantanea su Discord / Telegram / X. Nessun volto reale senza opt-in. Video dal tuo archivio.</p>
+<button type="button" onclick="enterStudio18()" class="px-8 py-3 rounded-full bg-red-800 hover:bg-red-700 text-white font-bold text-sm">Ho 18 anni o più · Entra nello studio</button>
+</div>
+<div id="studio-sala" class="hidden space-y-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+<div class="space-y-4 font-mono text-xs">
+<div>
+<label class="text-pink-300 block mb-1" for="gen-prompt">Prompt / scena (adulti, consensuale):</label>
+<textarea id="gen-prompt" rows="3" class="w-full bg-black border border-pink-500/40 rounded p-3 text-xs text-pink-200 outline-none" placeholder="Es: Mistress Rubina in lattice nero, slave in ginocchio, bocca aperta, luce rossa, fumetto noir cyber..."></textarea>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="text-pink-300 block mb-1" for="gen-type">FORMATO:</label>
+<select id="gen-type" onchange="onStudioType()" class="w-full bg-black border border-pink-500/40 rounded p-2 text-xs text-pink-200 outline-none">
+<option value="foto">Foto-manifesto 18+</option>
+<option value="fumetto">Fumetto erotico (4 vignette)</option>
+<option value="video">Video dal tuo archivio</option>
+</select>
+</div>
+<div>
+<label class="text-pink-300 block mb-1" for="gen-style">STILE:</label>
+<select id="gen-style" class="w-full bg-black border border-pink-500/40 rounded p-2 text-xs text-pink-200 outline-none">
+<option value="lattice">Hardcore & Lattice</option>
+<option value="seta">Bondage & Seta</option>
+<option value="cyber">Orgia Cyberpunk</option>
+<option value="mistress">Suite Mistress (Rubina/Zara/Valeska)</option>
+</select>
+</div>
+</div>
+<div id="video-upload-wrap" class="hidden">
+<label class="text-pink-300 block mb-1" for="gen-video">Carica un video 18+ che hai creato tu (resta sul tuo dispositivo):</label>
+<input id="gen-video" type="file" accept="video/*" class="w-full text-pink-200 text-[11px]">
+</div>
+<div class="flex items-center gap-2">
+<input type="checkbox" id="use-agi" checked class="accent-pink-500">
+<label for="use-agi" class="text-pink-300">Usa Motore AGI Sovrano (primario)</label>
+</div>
+<div class="flex items-center gap-2">
+<input type="checkbox" id="sync-distel" checked class="accent-pink-500">
+<label for="sync-distel" class="text-pink-300">Sync DisTel (Discord + TG + X)</label>
+</div>
+<label class="text-[10px] text-zinc-400 block" for="horde-key">Chiave AI Horde (solo fallback):</label>
+<input id="horde-key" type="password" autocomplete="off" placeholder="vuoto = anonimo" onchange="salvaHordeKey()" class="w-full bg-black border border-pink-500/40 rounded p-2 text-xs text-pink-200 outline-none mb-2">
+<button type="button" onclick="runOurVelvetGeneration()" id="studio-go" class="w-full py-3 bg-gradient-to-r from-pink-700 to-red-700 hover:from-pink-600 hover:to-red-600 text-white font-bold text-xs rounded transition shadow-lg tracking-wider">
+⚡ GENERA SUPREME (AGI + DIS TEL)
+</button>
+<details class="vh-more"><summary>Motore Supreme · AGI + DisTel fusion</summary><p class="text-[10px] text-pink-400/80 leading-relaxed">Primario: endpoint sovrano /api/agi/generate di zdos-velvet-nexus. Sync automatico via DisTel-agi su Discord/Telegram/X. AI Horde solo se AGI offline. Non è una foto reale. Safeword ROSSO sempre attivo.</p></details>
+</div>
+<div class="bg-black/90 p-3 rounded-xl border border-pink-500/30 flex flex-col items-center justify-center relative min-h-[260px]">
+<div id="gen-result" class="w-full text-center space-y-2">
+<span class="text-4xl">👑</span>
+<h4 class="text-white font-bold text-sm font-mono">Studio Supreme pronto</h4>
+<p class="text-[11px] text-pink-300/70">Scrivi la scena, attiva AGI + DisTel, genera. Poi pubblica, contest o condividi.</p>
+</div>
+</div>
+</div>
+<div id="studio-actions" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-2">
+<button type="button" onclick="publishStudioWork()" class="py-2.5 bg-pink-900 hover:bg-pink-800 text-white font-bold text-xs rounded">Pubblica nel feed</button>
+<button type="button" onclick="enterStudioContest()" class="py-2.5 bg-red-900 hover:bg-red-800 text-white font-bold text-xs rounded">Iscrivi al contest</button>
+<button type="button" onclick="shareStudioOnX()" class="py-2.5 bg-black border border-sky-500 text-sky-300 hover:bg-sky-950 font-bold text-xs rounded">Share on X</button>
+</div>
+</div>
+</section>
